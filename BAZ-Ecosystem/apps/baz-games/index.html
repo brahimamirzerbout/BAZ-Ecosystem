@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BAZ Games - Play Online</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #8b5cf6;
+      --primary-dark: #7c3aed;
+      --bg-dark: #0f0f1a;
+      --bg-secondary: #1a1a2e;
+      --bg-tertiary: #252542;
+      --text-primary: #ffffff;
+      --text-secondary: #a0a0b8;
+      --accent: #8b5cf6;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      background: rgba(15,15,26,0.95);
+      backdrop-filter: blur(10px);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+      border-bottom: 1px solid #2a2a4a;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 24px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .search-bar {
+      flex: 1;
+      max-width: 500px;
+      margin: 0 32px;
+      position: relative;
+    }
+    
+    .search-bar input {
+      width: 100%;
+      padding: 12px 16px 12px 44px;
+      background: var(--bg-tertiary);
+      border: 1px solid #333;
+      border-radius: 12px;
+      color: white;
+      font-size: 14px;
+    }
+    
+    .search-bar i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+    }
+    
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .header-btn {
+      padding: 10px 20px;
+      background: var(--bg-tertiary);
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .header-btn:hover {
+      background: #333;
+    }
+    
+    .header-btn.primary {
+      background: var(--primary);
+    }
+    
+    .header-btn.primary:hover {
+      background: var(--primary-dark);
+    }
+    
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #0ea5e9 100%);
+      padding: 60px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .hero h1 {
+      font-size: 56px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    
+    .hero p {
+      font-size: 20px;
+      opacity: 0.9;
+      margin-bottom: 24px;
+    }
+    
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+    }
+    
+    .btn {
+      padding: 14px 32px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+    
+    .btn-primary {
+      background: white;
+      color: var(--primary);
+    }
+    
+    .btn-primary:hover {
+      transform: scale(1.05);
+    }
+    
+    .btn-secondary {
+      background: rgba(255,255,255,0.2);
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.3);
+    }
+    
+    /* Categories */
+    .categories {
+      display: flex;
+      gap: 12px;
+      padding: 24px 32px;
+      overflow-x: auto;
+    }
+    
+    .category {
+      padding: 10px 20px;
+      background: var(--bg-secondary);
+      border: 1px solid #333;
+      border-radius: 10px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    
+    .category:hover, .category.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+    
+    /* Section */
+    .section {
+      padding: 24px 32px;
+    }
+    
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+    }
+    
+    /* Games Grid */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    
+    .game-card {
+      background: var(--bg-secondary);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 1px solid transparent;
+    }
+    
+    .game-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+      box-shadow: 0 12px 40px rgba(139, 92, 246, 0.2);
+    }
+    
+    .game-image {
+      position: relative;
+      height: 140px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 56px;
+    }
+    
+    .game-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .game-card:hover .game-overlay {
+      opacity: 1;
+    }
+    
+    .play-icon {
+      width: 60px;
+      height: 60px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: white;
+    }
+    
+    .game-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    
+    .badge-new {
+      background: #22c55e;
+    }
+    
+    .badge-hot {
+      background: #ef4444;
+    }
+    
+    .badge-pro {
+      background: linear-gradient(135deg, #f59e0b, #fbbf24);
+    }
+    
+    .game-info {
+      padding: 16px;
+    }
+    
+    .game-name {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .game-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    
+    .game-rating {
+      color: #fbbf24;
+    }
+    
+    /* Live Streams */
+    .live-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    
+    .live-card {
+      background: var(--bg-secondary);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .live-card:hover {
+      transform: scale(1.02);
+    }
+    
+    .live-thumbnail {
+      position: relative;
+      height: 160px;
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+    }
+    
+    .live-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: #ef4444;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    
+    .viewer-count {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      background: rgba(0,0,0,0.7);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    .live-info {
+      padding: 16px;
+      display: flex;
+      gap: 12px;
+    }
+    
+    .streamer-avatar {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+    
+    .live-details h4 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    
+    .live-details p {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    
+    /* Tournament Banner */
+    .tournament-banner {
+      background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+      border-radius: 20px;
+      padding: 32px;
+      margin: 24px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .tournament-info h3 {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    
+    .tournament-info p {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+    
+    .prize-pool {
+      text-align: center;
+    }
+    
+    .prize-label {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-bottom: 4px;
+    }
+    
+    .prize-amount {
+      font-size: 36px;
+      font-weight: 900;
+    }
+    
+    /* Bottom Nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15,15,26,0.95);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-around;
+      padding: 12px 0;
+      border-top: 1px solid #2a2a4a;
+      z-index: 100;
+    }
+    
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    
+    .nav-item.active {
+      color: var(--primary);
+    }
+    
+    .nav-item i {
+      font-size: 20px;
+    }
+    
+    .nav-item span {
+      font-size: 11px;
+      font-weight: 500;
+    }
+    
+    .content {
+      padding-bottom: 80px;
+    }
+    
+    ::-webkit-scrollbar {
+      height: 6px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: var(--bg-tertiary);
+      border-radius: 3px;
+    }
+    
+    @media (max-width: 768px) {
+      .search-bar {
+        display: none;
+      }
+      
+      .hero h1 {
+        font-size: 32px;
+      }
+      
+      .tournament-banner {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">
+      <i class="fas fa-gamepad"></i>
+      <span>BAZ Games</span>
+    </div>
+    
+    <div class="search-bar">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search games, streamers...">
+    </div>
+    
+    <div class="header-actions">
+      <button class="header-btn"><i class="fas fa-bell"></i></button>
+      <button class="header-btn primary"><i class="fas fa-coins"></i> 500</button>
+    </div>
+  </header>
+  
+  <div class="content">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>🎮 Play & Win</h1>
+        <p>Stream games, compete in tournaments, and win prizes</p>
+        <div class="hero-buttons">
+          <button class="btn btn-primary">Start Playing</button>
+          <button class="btn btn-secondary">Watch Streams</button>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Tournament -->
+    <div class="tournament-banner">
+      <div class="tournament-info">
+        <h3>🏆 Weekly Tournament</h3>
+        <p the ultimate>Join gaming competition</p>
+      </div>
+      <div class="prize-pool">
+        <div class="prize-label">Prize Pool</div>
+        <div class="prize-amount">100,000 DA</div>
+      </div>
+    </div>
+    
+    <!-- Categories -->
+    <div class="categories">
+      <div class="category active">🎮 All Games</div>
+      <div class="category">⚔️ Action</div>
+      <div class="category">🏕️ Adventure</div>
+      <div class="category">🏆 Competitive</div>
+      <div class="category">🎲 Casual</div>
+      <div class="category">🧩 Puzzle</div>
+      <div class="category">🏹 RPG</div>
+      <div class="category">🏎️ Racing</div>
+    </div>
+    
+    <!-- Popular Games -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">🔥 Popular Games</h2>
+        <span style="color:var(--primary);cursor:pointer;">See All</span>
+      </div>
+      <div class="games-grid">
+        <div class="game-card">
+          <div class="game-image">
+            🎮
+            <span class="game-badge badge-hot">HOT</span>
+            <div class="game-overlay">
+              <div class="play-icon"><i class="fas fa-play"></i></div>
+            </div>
+          </div>
+          <div class="game-info">
+            <h3 class="game-name">Street Fighter VI</h3>
+            <div class="game-meta">
+              <span>12K plays</span>
+              <span class="game-rating"><i class="fas fa-star"></i> 4.9</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="game-card">
+          <div class="game-image" style="background:linear-gradient(135deg,#f093fb,#f5576c)">
+            🏎️
+            <span class="game-badge badge-new">NEW</span>
+            <div class="game-overlay">
+              <div class="play-icon"><i class="fas fa-play"></i></div>
+            </div>
+          </div>
+          <div class="game-info">
+            <h3 class="game-name">Speed Racing 3D</h3>
+            <div class="game-meta">
+              <span>8K plays</span>
+              <span class="game-rating"><i class="fas fa-star"></i> 4.7</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="game-card">
+          <div class="game-image" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">
+            🦸
+            <div class="game-overlay">
+              <div class="play-icon"><i class="fas fa-play"></i></div>
+            </div>
+          </div>
+          <div class="game-info">
+            <h3 class="game-name">Super Heroes Arena</h3>
+            <div class="game-meta">
+              <span>15K plays</span>
+              <span class="game-rating"><i class="fas fa-star"></i> 4.8</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="game-card">
+          <div class="game-image" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">
+            🐦
+            <span class="game-badge badge-pro">PRO</span>
+            <div class="game-overlay">
+              <div class="play-icon"><i class="fas fa-play"></i></div>
+            </div>
+          </div>
+          <div class="game-info">
+            <h3 class="game-name">Angry Birds</h3>
+            <div class="game-meta">
+              <span>25K plays</span>
+              <span class="game-rating"><i class="fas fa-star"></i> 4.6</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="game-card">
+          <div class="game-image" style="background:linear-gradient(135deg,#a29bfe,#6c5ce7)">
+            🧩
+            <div class="game-overlay">
+              <div class="play-icon"><i class="fas fa-play"></i></div>
+            </div>
+          </div>
+          <div class="game-info">
+            <h3 class="game-name">Brain Puzzle</h3>
+            <div class="game-meta">
+              <span>5K plays</span>
+              <span class="game-rating"><i class="fas fa-star"></i> 4.5</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="game-card">
+          <div class="game-image" style="background:linear-gradient(135deg,#ffecd2,#fcb69f)">
+            🏰
+            <div class="game-overlay">
+              <div class="play-icon"><i class="fas fa-play"></i></div>
+            </div>
+          </div>
+          <div class="game-info">
+            <h3 class="game-name">Castle Defense</h3>
+            <div class="game-meta">
+              <span>18K plays</span>
+              <span class="game-rating"><i class="fas fa-star"></i> 4.8</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Live Streams -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">📺 Live Now</h2>
+        <span style="color:var(--primary);cursor:pointer;">See All</span>
+      </div>
+      <div class="live-grid">
+        <div class="live-card">
+          <div class="live-thumbnail">
+            🎮
+            <span class="live-badge">🔴 LIVE</span>
+            <span class="viewer-count">👁 12.5K</span>
+          </div>
+          <div class="live-info">
+            <div class="streamer-avatar">A</div>
+            <div class="live-details">
+              <h4>Algerian Gamer</h4>
+              <p>Playing Fortnite • English</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="live-card">
+          <div class="live-thumbnail" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">
+            🏆
+            <span class="live-badge">🔴 LIVE</span>
+            <span class="viewer-count">👁 8.2K</span>
+          </div>
+          <div class="live-info">
+            <div class="streamer-avatar" style="background:linear-gradient(135deg,#f093fb,#f5576c)">M</div>
+            <div class="live-details">
+              <h4>Master Pro</h4>
+              <p>Tournament Finals • Arabic</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="live-card">
+          <div class="live-thumbnail" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">
+            ⚔️
+            <span class="live-badge">🔴 LIVE</span>
+            <span class="viewer-count">👁 5.8K</span>
+          </div>
+          <div class="live-info">
+            <div class="streamer-avatar" style="background:linear-gradient(135deg,#a29bfe,#6c5ce7)">K</div>
+            <div class="live-details">
+              <h4>King Ahmed</h4>
+              <p>League of Legends • French</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- New Games -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">🆕 New Releases</h2>
+        <span style="color:var(--primary);cursor:pointer;">See All</span>
+      </div>
+      <div class="games-grid">
+        <div class="game-card">
+          <div class="game-image" style="background:linear-gradient(135deg,#ff6b6b,#feca57)">
+            🦈
+            <span class="game-badge badge-new">NEW</span>
+            <div class="game-overlay">
+              <div class="play-icon"><i class="fas fa-play"></i></div>
+            </div>
+          </div>
+          <div class="game-info">
+            <h3 class="game-name">Shark Attack 3D</h3>
+            <div class="game-meta">
+              <span>3K plays</span>
+              <span class="game-rating"><i class="fas fa-star"></i> 4.4</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="game-card">
+          <div class="game-image" style="background:linear-gradient(135deg,#74b9ff,#0984e3)">
+            🚁
+            <span class="game-badge badge-new">NEW</span>
+            <div class="game-overlay">
+              <div class="play-icon"><i class="fas fa-play"></i></div>
+            </div>
+          </div>
+          <div class="game-info">
+            <h3 class="game-name">Helicopter Hero</h3>
+            <div class="game-meta">
+              <span>2K plays</span>
+              <span class="game-rating"><i class="fas fa-star"></i> 4.6</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="game-card">
+          <div class="game-image" style="background:linear-gradient(135deg,#fd79a8,#e84393)">
+            💎
+            <span class="game-badge badge-pro">PREMIUM</span>
+            <div class="game-overlay">
+              <div class="play-icon"><i class="fas fa-play"></i></div>
+            </div>
+          </div>
+          <div class="game-info">
+            <h3 class="game-name">Jewel Quest</h3>
+            <div class="game-meta">
+              <span>10K plays</span>
+              <span class="game-rating"><i class="fas fa-star"></i> 4.9</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="game-card">
+          <div class="game-image" style="background:linear-gradient(135deg,#ffeaa7,#fdcb6e)">
+            🐍
+            <span class="game-badge badge-new">NEW</span>
+            <div class="game-overlay">
+              <div class="play-icon"><i class="fas fa-play"></i></div>
+            </div>
+          </div>
+          <div class="game-info">
+            <h3 class="game-name">Snake Evolution</h3>
+            <div class="game-meta">
+              <span>6K plays</span>
+              <span class="game-rating"><i class="fas fa-star"></i> 4.5</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav">
+    <div class="nav-item active">
+      <i class="fas fa-gamepad"></i>
+      <span>Games</span>
+    </div>
+    <div class="nav-item">
+      <i class="fas fa-tv"></i>
+      <span>Streams</span>
+    </div>
+    <div class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Tournaments</span>
+    </div>
+    <div class="nav-item">
+      <i class="fas fa-store"></i>
+      <span>Store</span>
+    </div>
+    <div class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </div>
+  </nav>
+  
+  <script>
+    document.querySelectorAll('.category').forEach(cat => {
+      cat.addEventListener('click', () => {
+        document.querySelectorAll('.category').forEach(c => c.classList.remove('active'));
+        cat.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

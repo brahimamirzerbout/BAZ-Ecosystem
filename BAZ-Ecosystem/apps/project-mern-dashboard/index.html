@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MERN Dashboard - Full Stack Template</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --primary: #22c55e; --secondary: #16a34a; --bg-dark: #0a0a0f; --bg-secondary: #12121a; --bg-tertiary: #1a1a25; --text-primary: #f8fafc; --text-secondary: #94a3b8; --border: #2e2e3a; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; }
+    .app-container { display: flex; min-height: 100vh; }
+    .sidebar { width: 260px; background: var(--bg-secondary); border-right: 1px solid var(--border); padding: 1.5rem; }
+    .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 2rem; display: flex; align-items: center; gap: 10px; }
+    .tech-badge { font-size: 0.7rem; background: rgba(34, 197, 94, 0.2); color: var(--primary); padding: 0.25rem 0.5rem; border-radius: 4px; margin-left: auto; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 0.75rem 1rem; border-radius: 10px; cursor: pointer; color: var(--text-secondary); margin-bottom: 0.5rem; transition: all 0.2s; }
+    .nav-item:hover, .nav-item.active { background: rgba(34, 197, 94, 0.15); color: var(--primary); }
+    .main-content { flex: 1; padding: 2rem; overflow-y: auto; }
+    .header { margin-bottom: 2rem; }
+    .header h1 { font-size: 1.75rem; font-weight: 700; }
+    .tech-stack { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .tech-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; }
+    .tech-item.mongodb { color: #4db33d; }
+    .tech-item.express { color: #fff; }
+    .tech-item.react { color: #61dafb; }
+    .tech-item.node { color: #68a063; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; text-align: center; }
+    .stat-value { font-size: 1.75rem; font-weight: 700; color: var(--primary); }
+    .stat-label { font-size: 0.85rem; color: var(--text-secondary); }
+    .dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
+    .card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; }
+    .card-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; }
+    .api-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .api-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: var(--bg-tertiary); border-radius: 10px; }
+    .api-method { padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+    .api-method.get { background: rgba(34, 197, 94, 0.2); color: var(--primary); }
+    .api-method.post { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+    .api-method.put { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+    .api-path { font-size: 0.9rem; }
+    .status-indicator { width: 8px; height: 8px; border-radius: 50%; }
+    .status-indicator.online { background: var(--primary); }
+    .api-status { font-size: 0.8rem; color: var(--text-secondary); display: flex; align-items: center; gap: 0.5rem; }
+    @media (max-width: 768px) { .sidebar { display: none; } .stats-grid { grid-template-columns: repeat(2, 1fr); } .dashboard-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="logo"><i class="fas fa-layer-group"></i> MERN <span class="tech-badge">Stack</span></div>
+      <div class="nav-item active"><i class="fas fa-th-large"></i> Dashboard</div>
+      <div class="nav-item"><i class="fas fa-users"></i> Users</div>
+      <div class="nav-item"><i class="fas fa-box"></i> Products</div>
+      <div class="nav-item"><i class="fas fa-database"></i> Data</div>
+      <div class="nav-item"><i class="fas fa-cog"></i> Settings</div>
+    </aside>
+    <main class="main-content">
+      <div class="header">
+        <h1>MERN Dashboard</h1>
+        <p style="color: var(--text-secondary);">Full-stack management system template</p>
+      </div>
+      <div class="tech-stack">
+        <span class="tech-item mongodb"><i class="fas fa-database"></i> MongoDB</span>
+        <span class="tech-item express"><i class="fas fa-server"></i> Express</span>
+        <span class="tech-item react"><i class="fab fa-react"></i> React</span>
+        <span class="tech-item node"><i class="fab fa-node-js"></i> Node.js</span>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-value">1,234</div><div class="stat-label">Users</div></div>
+        <div class="stat-card"><div class="stat-value">567</div><div class="stat-label">Products</div></div>
+        <div class="stat-card"><div class="stat-value">$45K</div><div class="stat-label">Revenue</div></div>
+        <div class="stat-card"><div class="stat-value">98%</div><div class="stat-label">Uptime</div></div>
+      </div>
+      <div class="dashboard-grid">
+        <div class="card">
+          <h3 class="card-title">API Endpoints</h3>
+          <div class="api-list">
+            <div class="api-item">
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <span class="api-method get">GET</span>
+                <span class="api-path">/api/users</span>
+              </div>
+              <span class="api-status"><span class="status-indicator online"></span> Online</span>
+            </div>
+            <div class="api-item">
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <span class="api-method post">POST</span>
+                <span class="api-path">/api/users</span>
+              </div>
+              <span class="api-status"><span class="status-indicator online"></span> Online</span>
+            </div>
+            <div class="api-item">
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <span class="api-method get">GET</span>
+                <span class="api-path">/api/products</span>
+              </div>
+              <span class="api-status"><span class="status-indicator online"></span> Online</span>
+            </div>
+            <div class="api-item">
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <span class="api-method put">PUT</span>
+                <span class="api-path">/api/products/:id</span>
+              </div>
+              <span class="api-status"><span class="status-indicator online"></span> Online</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Quick Actions</h3>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div class="api-item" style="cursor: pointer;"><i class="fas fa-plus" style="color: var(--primary);"></i> Add User</div>
+            <div class="api-item" style="cursor: pointer;"><i class="fas fa-plus" style="color: var(--primary);"></i> Add Product</div>
+            <div class="api-item" style="cursor: pointer;"><i class="fas fa-sync" style="color: var(--primary);"></i> Sync Database</div>
+            <div class="api-item" style="cursor: pointer;"><i class="fas fa-file-export" style="color: var(--primary);"></i> Export Data</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
+

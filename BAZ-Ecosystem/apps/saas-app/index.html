@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SaaS App - Business Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --primary: #6366f1; --secondary: #8b5cf6; --bg-dark: #0a0a0f; --bg-secondary: #12121a; --bg-tertiary: #1a1a25; --text-primary: #f8fafc; --text-secondary: #94a3b8; --border: #2e2e3a; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; }
+    .app-container { display: flex; min-height: 100vh; }
+    .sidebar { width: 240px; background: var(--bg-secondary); border-right: 1px solid var(--border); padding: 1.5rem; }
+    .logo { font-size: 1.4rem; font-weight: 700; color: var(--primary); margin-bottom: 2rem; }
+    .nav-item { padding: 0.75rem 1rem; border-radius: 10px; cursor: pointer; color: var(--text-secondary); margin-bottom: 0.5rem; }
+    .nav-item:hover, .nav-item.active { background: rgba(99, 102, 241, 0.15); color: var(--primary); }
+    .main-content { flex: 1; padding: 2rem; }
+    .header { margin-bottom: 2rem; }
+    .header h1 { font-size: 1.5rem; font-weight: 700; }
+    .dashboard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .dash-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
+    .dash-card h3 { font-size: 1rem; margin-bottom: 1rem; color: var(--text-secondary); }
+    .dash-value { font-size: 2rem; font-weight: 700; color: var(--primary); }
+    @media (max-width: 768px) { .sidebar { display: none; } .dashboard-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="logo"><i class="fas fa-cloud"></i> SaaS App</div>
+      <div class="nav-item active">Dashboard</div>
+      <div class="nav-item">Users</div>
+      <div class="nav-item">Reports</div>
+      <div class="nav-item">Settings</div>
+    </aside>
+    <main class="main-content">
+      <div class="header"><h1>SaaS Dashboard</h1></div>
+      <div class="dashboard-grid">
+        <div class="dash-card"><h3>Total Users</h3><div class="dash-value">1,245</div></div>
+        <div class="dash-card"><h3>Revenue</h3><div class="dash-value">$8,450</div></div>
+        <div class="dash-card"><h3>Active</h3><div class="dash-value">89%</div></div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
+

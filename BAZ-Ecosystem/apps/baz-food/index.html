@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BAZ Food - Order Food Online</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #ff6b35;
+      --primary-dark: #e55a2b;
+      --bg-dark: #1a1a1a;
+      --bg-secondary: #252525;
+      --bg-tertiary: #2f2f2f;
+      --text-primary: #ffffff;
+      --text-secondary: #a0a0a0;
+      --accent: #ff6b35;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+    
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      background: var(--bg-secondary);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+      border-bottom: 1px solid #333;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    
+    .search-bar {
+      flex: 1;
+      max-width: 480px;
+      margin: 0 24px;
+      position: relative;
+    }
+    
+    .search-bar input {
+      width: 100%;
+      padding: 12px 16px 12px 44px;
+      background: var(--bg-tertiary);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-size: 14px;
+    }
+    
+    .search-bar input::placeholder {
+      color: var(--text-secondary);
+    }
+    
+    .search-bar i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+    }
+    
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .header-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--bg-tertiary);
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .header-btn:hover {
+      background: #3a3a3a;
+    }
+    
+    .cart-btn {
+      position: relative;
+    }
+    
+    .cart-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--primary);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Hero */
+    .hero {
+      padding: 24px;
+      background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+    }
+    
+    .hero-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .hero-text h1 {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    
+    .hero-text p {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+    
+    .hero-image {
+      font-size: 80px;
+    }
+    
+    /* Location Bar */
+    .location-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 24px;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid #333;
+    }
+    
+    .location-bar i {
+      color: var(--primary);
+    }
+    
+    .location-text {
+      flex: 1;
+    }
+    
+    .location-text strong {
+      display: block;
+      font-size: 14px;
+    }
+    
+    .location-text span {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    
+    .change-btn {
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    
+    /* Categories */
+    .categories {
+      padding: 24px;
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+    }
+    
+    .category {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 24px;
+      background: var(--bg-secondary);
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-width: 90px;
+    }
+    
+    .category:hover {
+      background: var(--bg-tertiary);
+      transform: translateY(-2px);
+    }
+    
+    .category.active {
+      background: var(--primary);
+    }
+    
+    .category-icon {
+      font-size: 28px;
+    }
+    
+    .category-name {
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    /* Section */
+    .section {
+      padding: 24px;
+    }
+    
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+    }
+    
+    .see-all {
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    
+    /* Restaurant Cards */
+    .restaurants-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    
+    .restaurant-card {
+      background: var(--bg-secondary);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    
+    .restaurant-card:hover {
+      transform: translateY(-4px);
+    }
+    
+    .restaurant-image {
+      position: relative;
+      height: 160px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+    }
+    
+    .restaurant-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(0,0,0,0.7);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    
+    .restaurant-info {
+      padding: 16px;
+    }
+    
+    .restaurant-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+    
+    .restaurant-name {
+      font-size: 16px;
+      font-weight: 700;
+    }
+    
+    .restaurant-rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    
+    .restaurant-rating i {
+      color: #ffd700;
+    }
+    
+    .restaurant-cuisine {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    
+    .restaurant-meta {
+      display: flex;
+      gap: 16px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    
+    .restaurant-meta i {
+      margin-right: 4px;
+    }
+    
+    .restaurant-footer {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-top: 1px solid #333;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    
+    /* Promo Banner */
+    .promo-banner {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 16px;
+      padding: 24px;
+      margin: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .promo-text h3 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    
+    .promo-text p {
+      opacity: 0.9;
+    }
+    
+    .promo-discount {
+      font-size: 48px;
+      font-weight: 900;
+    }
+    
+    /* Popular Items */
+    .popular-items {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      padding-bottom: 16px;
+    }
+    
+    .popular-items::-webkit-scrollbar {
+      height: 6px;
+    }
+    
+    .popular-items::-webkit-scrollbar-thumb {
+      background: var(--bg-tertiary);
+      border-radius: 3px;
+    }
+    
+    .item-card {
+      flex-shrink: 0;
+      width: 180px;
+      background: var(--bg-secondary);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    
+    .item-image {
+      height: 120px;
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+    }
+    
+    .item-info {
+      padding: 12px;
+    }
+    
+    .item-name {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    
+    .item-price {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .item-add {
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 8px;
+    }
+    
+    /* Bottom Nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--bg-secondary);
+      display: flex;
+      justify-content: space-around;
+      padding: 12px 0;
+      border-top: 1px solid #333;
+      z-index: 100;
+    }
+    
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    
+    .nav-item.active {
+      color: var(--primary);
+    }
+    
+    .nav-item i {
+      font-size: 20px;
+    }
+    
+    .nav-item span {
+      font-size: 11px;
+      font-weight: 500;
+    }
+    
+    .content {
+      padding-bottom: 80px;
+    }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: var(--bg-tertiary);
+      border-radius: 3px;
+    }
+    
+    @media (max-width: 768px) {
+      .search-bar {
+        display: none;
+      }
+      
+      .hero-content {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .hero-image {
+        font-size: 48px;
+        margin-top: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">
+      <i class="fas fa-utensils"></i>
+      <span>BAZ Food</span>
+    </div>
+    
+    <div class="search-bar">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search restaurants, cuisines...">
+    </div>
+    
+    <div class="header-actions">
+      <button class="header-btn">
+        <i class="fas fa-percent"></i>
+        Offers
+      </button>
+      <button class="header-btn cart-btn">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-badge">3</span>
+      </button>
+    </div>
+  </header>
+  
+  <!-- Location -->
+  <div class="location-bar">
+    <i class="fas fa-map-marker-alt"></i>
+    <div class="location-text">
+      <strong>Deliver to Home</strong>
+      <span>Alger, Bab El Oued, Rue Didouche</span>
+    </div>
+    <span class="change-btn">Change</span>
+  </div>
+  
+  <div class="content">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1>🍕 Hungry?</h1>
+          <p>Order food from your favorite restaurants</p>
+        </div>
+        <div class="hero-image">🍔</div>
+      </div>
+    </section>
+    
+    <!-- Promo -->
+    <div class="promo-banner">
+      <div class="promo-text">
+        <h3>50% OFF</h3>
+        <p>On your first order</p>
+      </div>
+      <div class="promo-discount">🎉</div>
+    </div>
+    
+    <!-- Categories -->
+    <div class="categories">
+      <div class="category active">
+        <span class="category-icon">🍔</span>
+        <span class="category-name">All</span>
+      </div>
+      <div class="category">
+        <span class="category-icon">🍕</span>
+        <span class="category-name">Pizza</span>
+      </div>
+      <div class="category">
+        <span class="category-icon">🍗</span>
+        <span class="category-name">Fast Food</span>
+      </div>
+      <div class="category">
+        <span class="category-icon">🍜</span>
+        <span class="category-name">Arabic</span>
+      </div>
+      <div class="category">
+        <span class="category-icon">🍣</span>
+        <span class="category-name">Sushi</span>
+      </div>
+      <div class="category">
+        <span class="category-icon">🥗</span>
+        <span class="category-name">Healthy</span>
+      </div>
+      <div class="category">
+        <span class="category-icon">☕</span>
+        <span class="category-name">Cafe</span>
+      </div>
+      <div class="category">
+        <span class="category-icon">🍰</span>
+        <span class="category-name">Desserts</span>
+      </div>
+    </div>
+    
+    <!-- Popular Items -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">🔥 Popular This Week</h2>
+        <span class="see-all">See All</span>
+      </div>
+      <div class="popular-items">
+        <div class="item-card">
+          <div class="item-image">🍔</div>
+          <div class="item-info">
+            <div class="item-name">Classic Burger</div>
+            <div style="display:flex;align-items:center;">
+              <span class="item-price">500 DA</span>
+              <button class="item-add">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="item-card">
+          <div class="item-image" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">🍕</div>
+          <div class="item-info">
+            <div class="item-name">Pepperoni Pizza</div>
+            <div style="display:flex;align-items:center;">
+              <span class="item-price">1200 DA</span>
+              <button class="item-add">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="item-card">
+          <div class="item-image" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">🍜</div>
+          <div class="item-info">
+            <div class="item-name">Couscous</div>
+            <div style="display:flex;align-items:center;">
+              <span class="item-price">800 DA</span>
+              <button class="item-add">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="item-card">
+          <div class="item-image" style="background:linear-gradient(135deg,#f093fb,#f5576c)">🍣</div>
+          <div class="item-info">
+            <div class="item-name">Sushi Platter</div>
+            <div style="display:flex;align-items:center;">
+              <span class="item-price">2500 DA</span>
+              <button class="item-add">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="item-card">
+          <div class="item-image" style="background:linear-gradient(135deg,#a29bfe,#6c5ce7)">🌮</div>
+          <div class="item-info">
+            <div class="item-name">Tacos</div>
+            <div style="display:flex;align-items:center;">
+              <span class="item-price">450 DA</span>
+              <button class="item-add">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="item-card">
+          <div class="item-image" style="background:linear-gradient(135deg,#ffecd2,#fcb69f)">🍦</div>
+          <div class="item-info">
+            <div class="item-name">Ice Cream</div>
+            <div style="display:flex;align-items:center;">
+              <span class="item-price">300 DA</span>
+              <button class="item-add">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Near You -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">🍽️ Near You</h2>
+        <span class="see-all">See All</span>
+      </div>
+      <div class="restaurants-grid">
+        <div class="restaurant-card">
+          <div class="restaurant-image">
+            🍕
+            <span class="restaurant-tag">FREE DELIVERY</span>
+          </div>
+          <div class="restaurant-info">
+            <div class="restaurant-header">
+              <h3 class="restaurant-name">Pizza Palace</h3>
+              <span class="restaurant-rating"><i class="fas fa-star"></i> 4.8</span>
+            </div>
+            <p class="restaurant-cuisine">Italian • Pizza • Pasta</p>
+            <div class="restaurant-meta">
+              <span><i class="fas fa-clock"></i> 25-35 min</span>
+              <span><i class="fas fa-motorcycle"></i> Free</span>
+            </div>
+          </div>
+          <div class="restaurant-footer">
+            <span>Min: 800 DA</span>
+            <span>🎉 20% OFF</span>
+          </div>
+        </div>
+        
+        <div class="restaurant-card">
+          <div class="restaurant-image" style="background:linear-gradient(135deg,#f093fb,#f5576c)">
+            🍔
+            <span class="restaurant-tag">POPULAR</span>
+          </div>
+          <div class="restaurant-info">
+            <div class="restaurant-header">
+              <h3 class="restaurant-name">Burger King</h3>
+              <span class="restaurant-rating"><i class="fas fa-star"></i> 4.6</span>
+            </div>
+            <p class="restaurant-cuisine">American • Fast Food • Burgers</p>
+            <div class="restaurant-meta">
+              <span><i class="fas fa-clock"></i> 15-25 min</span>
+              <span><i class="fas fa-motorcycle"></i> 100 DA</span>
+            </div>
+          </div>
+          <div class="restaurant-footer">
+            <span>Min: 500 DA</span>
+            <span></span>
+          </div>
+        </div>
+        
+        <div class="restaurant-card">
+          <div class="restaurant-image" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">
+            🍜
+          </div>
+          <div class="restaurant-info">
+            <div class="restaurant-header">
+              <h3 class="restaurant-name">Algerian Kitchen</h3>
+              <span class="restaurant-rating"><i class="fas fa-star"></i> 4.9</span>
+            </div>
+            <p class="restaurant-cuisine">Algerian • Traditional • Couscous</p>
+            <div class="restaurant-meta">
+              <span><i class="fas fa-clock"></i> 30-40 min</span>
+              <span><i class="fas fa-motorcycle"></i> 150 DA</span>
+            </div>
+          </div>
+          <div class="restaurant-footer">
+            <span>Min: 600 DA</span>
+            <span>🆕 New</span>
+          </div>
+        </div>
+        
+        <div class="restaurant-card">
+          <div class="restaurant-image" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">
+            🍣
+            <span class="restaurant-tag">PREMIUM</span>
+          </div>
+          <div class="restaurant-info">
+            <div class="restaurant-header">
+              <h3 class="restaurant-name">Sakura Sushi</h3>
+              <span class="restaurant-rating"><i class="fas fa-star"></i> 4.7</span>
+            </div>
+            <p class="restaurant-cuisine">Japanese • Sushi • Asian</p>
+            <div class="restaurant-meta">
+              <span><i class="fas fa-clock"></i> 35-45 min</span>
+              <span><i class="fas fa-motorcycle"></i> 200 DA</span>
+            </div>
+          </div>
+          <div class="restaurant-footer">
+            <span>Min: 1500 DA</span>
+            <span></span>
+          </div>
+        </div>
+        
+        <div class="restaurant-card">
+          <div class="restaurant-image" style="background:linear-gradient(135deg,#a29bfe,#6c5ce7)">
+            🌮
+          </div>
+          <div class="restaurant-info">
+            <div class="restaurant-header">
+              <h3 class="restaurant-name">Mexican Fiesta</h3>
+              <span class="restaurant-rating"><i class="fas fa-star"></i> 4.5</span>
+            </div>
+            <p class="restaurant-cuisine">Mexican • Tacos • Burritos</p>
+            <div class="restaurant-meta">
+              <span><i class="fas fa-clock"></i> 20-30 min</span>
+              <span><i class="fas fa-motorcycle"></i> 100 DA</span>
+            </div>
+          </div>
+          <div class="restaurant-footer">
+            <span>Min: 400 DA</span>
+            <span>🎉 15% OFF</span>
+          </div>
+        </div>
+        
+        <div class="restaurant-card">
+          <div class="restaurant-image" style="background:linear-gradient(135deg,#ffecd2,#fcb69f)">
+            ☕
+          </div>
+          <div class="restaurant-info">
+            <div class="restaurant-header">
+              <h3 class="restaurant-name">Coffee House</h3>
+              <span class="restaurant-rating"><i class="fas fa-star"></i> 4.8</span>
+            </div>
+            <p class="restaurant-cuisine">Cafe • Coffee • Desserts</p>
+            <div class="restaurant-meta">
+              <span><i class="fas fa-clock"></i> 15-20 min</span>
+              <span><i class="fas fa-motorcycle"></i> Free</span>
+            </div>
+          </div>
+          <div class="restaurant-footer">
+            <span>Min: 300 DA</span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav">
+    <div class="nav-item active">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </div>
+    <div class="nav-item">
+      <i class="fas fa-search"></i>
+      <span>Search</span>
+    </div>
+    <div class="nav-item">
+      <i class="fas fa-receipt"></i>
+      <span>Orders</span>
+    </div>
+    <div class="nav-item">
+      <i class="fas fa-heart"></i>
+      <span>Favorites</span>
+    </div>
+    <div class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </div>
+  </nav>
+</body>
+</html>

@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BAZ Empire - Enterprise Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #6366f1;
+      --secondary: #8b5cf6;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --bg-dark: #0f0f17;
+      --bg-secondary: #1a1a25;
+      --bg-tertiary: #252532;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --border: #2e2e3a;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+    
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+    }
+    
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 2rem;
+    }
+    
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .nav-section {
+      margin-bottom: 1.5rem;
+    }
+    
+    .nav-title {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+      padding-left: 0.5rem;
+    }
+    
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.9rem;
+    }
+    
+    .nav-item:hover, .nav-item.active {
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--text-primary);
+    }
+    
+    .nav-item i {
+      width: 20px;
+    }
+    
+    .nav-item .badge {
+      margin-left: auto;
+      background: var(--primary);
+      color: white;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    
+    .header-left h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    
+    .header-left p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+    
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.5rem 1rem;
+    }
+    
+    .search-box input {
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      outline: none;
+      width: 200px;
+    }
+    
+    .search-box i {
+      color: var(--text-secondary);
+    }
+    
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .notification-btn {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+    
+    .notification-btn .dot {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 8px;
+      height: 8px;
+      background: var(--error);
+      border-radius: 50%;
+    }
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    
+    /* Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+    }
+    
+    .stat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+    
+    .stat-icon.primary { background: rgba(99, 102, 241, 0.2); color: var(--primary); }
+    .stat-icon.success { background: rgba(34, 197, 94, 0.2); color: var(--success); }
+    .stat-icon.warning { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+    .stat-icon.error { background: rgba(239, 68, 68, 0.2); color: var(--error); }
+    
+    .stat-trend {
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .stat-trend.up { color: var(--success); }
+    .stat-trend.down { color: var(--error); }
+    
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    
+    .stat-label {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+    
+    /* Dashboard Grid */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+    }
+    
+    .card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    
+    .card-action {
+      color: var(--primary);
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    
+    /* Chart */
+    .chart-container {
+      height: 250px;
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      padding: 1rem 0;
+    }
+    
+    .chart-bar {
+      flex: 1;
+      background: linear-gradient(180deg, var(--primary), rgba(99, 102, 241, 0.3));
+      border-radius: 8px 8px 0 0;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .chart-bar:hover {
+      background: linear-gradient(180deg, var(--secondary), rgba(139, 92, 246, 0.3));
+    }
+    
+    .chart-bar::after {
+      content: attr(data-value);
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    
+    .chart-bar:hover::after {
+      opacity: 1;
+    }
+    
+    .chart-labels {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 0.5rem;
+    }
+    
+    .chart-labels span {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+    
+    /* Activity List */
+    .activity-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .activity-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0.75rem;
+      background: var(--bg-tertiary);
+      border-radius: 10px;
+    }
+    
+    .activity-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+    }
+    
+    .activity-icon.revenue { background: rgba(34, 197, 94, 0.2); color: var(--success); }
+    .activity-icon.user { background: rgba(99, 102, 241, 0.2); color: var(--primary); }
+    .activity-icon.order { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+    .activity-icon.system { background: rgba(139, 92, 246, 0.2); color: var(--secondary); }
+    
+    .activity-info {
+      flex: 1;
+    }
+    
+    .activity-info h4 {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+    
+    .activity-info p {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+    
+    .activity-time {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+    
+    /* Quick Actions */
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .quick-action {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 1rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .quick-action:hover {
+      border-color: var(--primary);
+      background: rgba(99, 102, 241, 0.1);
+    }
+    
+    .quick-action i {
+      font-size: 1.25rem;
+      color: var(--primary);
+    }
+    
+    .quick-action span {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="logo-icon">🏛️</div>
+        <span class="logo-text">Empire</span>
+      </div>
+      
+      <div class="nav-section">
+        <div class="nav-title">Main</div>
+        <div class="nav-item active"><i class="fas fa-th-large"></i> Dashboard</div>
+        <div class="nav-item"><i class="fas fa-chart-line"></i> Analytics</div>
+        <div class="nav-item"><i class="fas fa-users"></i> Customers</div>
+        <div class="nav-item"><i class="fas fa-box"></i> Products</div>
+      
+      <div class="nav-section">
+        <div class="nav-title">Finance</div>
+        <div class="nav-item"><i class="fas fa-wallet"></i> Revenue</div>
+        <div class="nav-item"><i class="fas fa-receipt"></i> Transactions</div>
+        <div class="nav-item"><i class="fas fa-credit-card"></i> Payments</div>
+      
+      <div class="nav-section">
+        <div class="nav-title">Management</div>
+        <div class="nav-item"><i class="fas fa-cog"></i> Settings</div>
+        <div class="nav-item"><i class="fas fa-shield-alt"></i> Security</div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="header">
+        <div class="header-left">
+          <h1>Welcome back, Admin!</h1>
+          <p>Here's what's happening with your business today.</p>
+        </div>
+        <div class="header-right">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search...">
+          </div>
+          <button class="notification-btn">
+            <i class="fas fa-bell"></i>
+            <span class="dot"></span>
+          </button>
+          <div class="user-avatar">A</div>
+      </div>
+      
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon primary"><i class="fas fa-users"></i></div>
+            <span class="stat-trend up"><i class="fas fa-arrow-up"></i> 12%</span>
+          </div>
+          <div class="stat-value">24,589</div>
+          <div class="stat-label">Total Users</div>
+        
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon success"><i class="fas fa-dollar-sign"></i></div>
+            <span class="stat-trend up"><i class="fas fa-arrow-up"></i> 8%</span>
+          </div>
+          <div class="stat-value">$128,450</div>
+          <div class="stat-label">Monthly Revenue</div>
+        
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon warning"><i class="fas fa-shopping-cart"></i></div>
+            <span class="stat-trend down"><i class="fas fa-arrow-down"></i> 3%</span>
+          </div>
+          <div class="stat-value">1,284</div>
+          <div class="stat-label">Orders</div>
+        
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon error"><i class="fas fa-exclamation-triangle"></i></div>
+            <span class="stat-trend down"><i class="fas fa-arrow-down"></i> 15%</span>
+          </div>
+          <div class="stat-value">23</div>
+          <div class="stat-label">Pending Issues</div>
+      </div>
+      
+      <!-- Dashboard Grid -->
+      <div class="dashboard-grid">
+        <!-- Revenue Chart -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Revenue Overview</h3>
+            <span class="card-action">View Report</span>
+          </div>
+          <div class="chart-container">
+            <div class="chart-bar" style="height: 45%;" data-value="$12k"></div>
+            <div class="chart-bar" style="height: 65%;" data-value="$18k"></div>
+            <div class="chart-bar" style="height: 55%;" data-value="$15k"></div>
+            <div class="chart-bar" style="height: 80%;" data-value="$22k"></div>
+            <div class="chart-bar" style="height: 70%;" data-value="$19k"></div>
+            <div class="chart-bar" style="height: 90%;" data-value="$25k"></div>
+            <div class="chart-bar" style="height: 75%;" data-value="$21k"></div>
+          <div class="chart-labels">
+            <span>Mon</span>
+            <span>Tue</span>
+            <span>Wed</span>
+            <span>Thu</span>
+            <span>Fri</span>
+            <span>Sat</span>
+            <span>Sun</span>
+          </div>
+        
+        <!-- Recent Activity -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Recent Activity</h3>
+            <span class="card-action">See All</span>
+          </div>
+          <div class="activity-list">
+            <div class="activity-item">
+              <div class="activity-icon revenue"><i class="fas fa-dollar-sign"></i></div>
+              <div class="activity-info">
+                <h4>Payment Received</h4>
+                <p>From Order #12845</p>
+              </div>
+              <span class="activity-time">2m</span>
+            </div>
+            
+            <div class="activity-item">
+              <div class="activity-icon user"><i class="fas fa-user-plus"></i></div>
+              <div class="activity-info">
+                <h4>New User</h4>
+                <p>Sarah joined premium</p>
+              </div>
+              <span class="activity-time">15m</span>
+            </div>
+            
+            <div class="activity-item">
+              <div class="activity-icon order"><i class="fas fa-shopping-bag"></i></div>
+              <div class="activity-info">
+                <h4>New Order</h4>
+                <p>Order #12846 placed</p>
+              </div>
+              <span class="activity-time">1h</span>
+            </div>
+            
+            <div class="activity-item">
+              <div class="activity-icon system"><i class="fas fa-server"></i></div>
+              <div class="activity-info">
+                <h4>System Update</h4>
+                <p>Security patch applied</p>
+              </div>
+              <span class="activity-time">3h</span>
+            </div>
+          
+          <div class="quick-actions">
+            <div class="quick-action">
+              <i class="fas fa-plus"></i>
+              <span>Add User</span>
+            </div>
+            <div class="quick-action">
+              <i class="fas fa-file-invoice"></i>
+              <span>New Invoice</span>
+            </div>
+        </div>
+    </main>
+  </div>
+</body>
+</html>

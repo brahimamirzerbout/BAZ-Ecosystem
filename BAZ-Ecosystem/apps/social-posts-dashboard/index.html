@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Posts Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --primary: #8b5cf6; --bg-dark: #0a0a0f; --bg-secondary: #12121a; --bg-tertiary: #1a1a25; --text-primary: #f8fafc; --text-secondary: #94a3b8; --border: #2e2e3a; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; }
+    .app-container { display: flex; min-height: 100vh; }
+    .sidebar { width: 240px; background: var(--bg-secondary); border-right: 1px solid var(--border); padding: 1.5rem; }
+    .logo { font-size: 1.4rem; font-weight: 700; color: var(--primary); margin-bottom: 2rem; }
+    .nav-item { padding: 0.75rem 1rem; border-radius: 10px; cursor: pointer; color: var(--text-secondary); margin-bottom: 0.5rem; transition: all 0.2s; }
+    .nav-item:hover, .nav-item.active { background: rgba(139, 92, 246, 0.15); color: var(--primary); }
+    .main-content { flex: 1; padding: 2rem; }
+    .header { margin-bottom: 2rem; }
+    .header h1 { font-size: 1.5rem; font-weight: 700; }
+    .compose-box { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; }
+    .compose-box textarea { width: 100%; background: var(--bg-tertiary); border: none; border-radius: 12px; padding: 1rem; color: var(--text-primary); font-size: 1rem; resize: none; outline: none; min-height: 100px; font-family: inherit; }
+    .compose-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+    .compose-icons { display: flex; gap: 0.75rem; }
+    .compose-icon { width: 40px; height: 40px; background: var(--bg-tertiary); border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-secondary); }
+    .btn { padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 600; border: none; cursor: pointer; }
+    .btn-primary { background: var(--primary); color: white; }
+    .posts-list { display: flex; flex-direction: column; gap: 1rem; }
+    .post-item { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 1.25rem; }
+    .post-item p { color: var(--text-secondary); line-height: 1.6; }
+    @media (max-width: 768px) { .sidebar { display: none; } }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="logo"><i class="fas fa-pen"></i> Social Posts</div>
+      <div class="nav-item active">Dashboard</div>
+      <div class="nav-item">All Posts</div>
+      <div class="nav-item">Drafts</div>
+      <div class="nav-item">Analytics</div>
+    </aside>
+    <main class="main-content">
+      <div class="header"><h1>Social Posts</h1></div>
+      <div class="compose-box">
+        <textarea placeholder="What's on your mind?"></textarea>
+        <div class="compose-actions">
+          <div class="compose-icons">
+            <div class="compose-icon"><i class="fas fa-image"></i></div>
+            <div class="compose-icon"><i class="fas fa-video"></i></div>
+            <div class="compose-icon"><i class="fas fa-poll"></i></div>
+          </div>
+          <button class="btn btn-primary">Post</button>
+        </div>
+      </div>
+      <div class="posts-list">
+        <div class="post-item">
+          <p>🎉 Happy to share that we've reached 10K followers! Thank you for your support.</p>
+        </div>
+        <div class="post-item">
+          <p>📢 New feature alert! Check out our latest updates and let us know what you think.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
+

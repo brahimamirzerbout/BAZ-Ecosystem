@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Posts Dashboard V2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --primary: #ec4899; --secondary: #db2777; --bg-dark: #0a0a0f; --bg-secondary: #12121a; --bg-tertiary: #1a1a25; --text-primary: #f8fafc; --text-secondary: #94a3b8; --border: #2e2e3a; --success: #22c55e; --twitter: #1da1f2; --instagram: #e4405f; --linkedin: #0077b5; --youtube: #ff0000; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; }
+    .app-container { display: flex; min-height: 100vh; }
+    .sidebar { width: 260px; background: var(--bg-secondary); border-right: 1px solid var(--border); padding: 1.5rem; }
+    .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 2rem; display: flex; align-items: center; gap: 10px; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 0.75rem 1rem; border-radius: 10px; cursor: pointer; transition: all 0.2s; color: var(--text-secondary); margin-bottom: 0.5rem; }
+    .nav-item:hover, .nav-item.active { background: rgba(236, 72, 153, 0.15); color: var(--primary); }
+    .main-content { flex: 1; padding: 2rem; overflow-y: auto; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+    .header h1 { font-size: 1.75rem; font-weight: 700; }
+    .btn { padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; }
+    .btn-primary { background: var(--primary); color: white; }
+    .platforms { display: flex; gap: 1rem; margin-bottom: 2rem; }
+    .platform-btn { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.25rem; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 10px; color: var(--text-secondary); cursor: pointer; transition: all 0.2s; }
+    .platform-btn:hover, .platform-btn.active { border-color: var(--primary); color: var(--primary); }
+    .platform-btn .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; text-align: center; }
+    .stat-value { font-size: 1.75rem; font-weight: 700; }
+    .stat-label { font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem; }
+    .posts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .post-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; }
+    .post-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .post-author { display: flex; align-items: center; gap: 0.75rem; }
+    .author-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+    .author-info h4 { font-size: 0.95rem; }
+    .author-info p { font-size: 0.75rem; color: var(--text-secondary); }
+    .post-content { color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem; font-size: 0.95rem; }
+    .post-stats { display: flex; gap: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+    .post-stat { display: flex; align-items: center; gap: 0.5rem; color: var(--text-secondary); font-size: 0.85rem; cursor: pointer; }
+    .post-stat:hover { color: var(--primary); }
+    @media (max-width: 768px) { .sidebar { display: none; } .stats-grid { grid-template-columns: repeat(2, 1fr); } .posts-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="logo"><i class="fas fa-share-alt"></i> Social V2</div>
+      <div class="nav-item active"><i class="fas fa-th-large"></i> Dashboard</div>
+      <div class="nav-item"><i class="fas fa-pen"></i> Create Post</div>
+      <div class="nav-item"><i class="fas fa-calendar"></i> Scheduler</div>
+      <div class="nav-item"><i class="fas fa-chart-line"></i> Analytics</div>
+      <div class="nav-item"><i class="fas fa-cog"></i> Settings</div>
+    </aside>
+    <main class="main-content">
+      <div class="header">
+        <h1>Social Dashboard</h1>
+        <button class="btn btn-primary"><i class="fas fa-plus"></i> New Post</button>
+      </div>
+      <div class="platforms">
+        <button class="platform-btn active"><span class="dot" style="background: var(--twitter);"></span> Twitter</button>
+        <button class="platform-btn"><span class="dot" style="background: var(--instagram);"></span> Instagram</button>
+        <button class="platform-btn"><span class="dot" style="background: var(--linkedin);"></span> LinkedIn</button>
+        <button class="platform-btn"><span class="dot" style="background: var(--youtube);"></span> YouTube</button>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-value">24.5K</div><div class="stat-label">Followers</div></div>
+        <div class="stat-card"><div class="stat-value">1.2M</div><div class="stat-label">Impressions</div></div>
+        <div class="stat-card"><div class="stat-value">456</div><div class="stat-label">Engagements</div></div>
+        <div class="stat-card"><div class="stat-value">89</div><div class="stat-label">Clicks</div></div>
+      </div>
+      <h3 style="margin-bottom: 1rem;">Recent Posts</h3>
+      <div class="posts-grid">
+        <div class="post-card">
+          <div class="post-header">
+            <div class="post-author">
+              <div class="author-avatar">B</div>
+              <div class="author-info"><h4>BAZ Tech</h4><p>@baztech • 2h ago</p></div>
+            </div>
+          </div>
+          <p class="post-content">🚀 Excited to announce our new AI-powered features! Stay tuned for the next generation of digital innovation. #AI #Tech #Innovation</p>
+          <div class="post-stats">
+            <span class="post-stat"><i class="fas fa-heart"></i> 234</span>
+            <span class="post-stat"><i class="fas fa-comment"></i> 45</span>
+            <span class="post-stat"><i class="fas fa-share"></i> 12</span>
+          </div>
+        </div>
+        <div class="post-card">
+          <div class="post-header">
+            <div class="post-author">
+              <div class="author-avatar">B</div>
+              <div class="author-info"><h4>BAZ Tech</h4><p>@baztech • 5h ago</p></div>
+            </div>
+          </div>
+          <p class="post-content">💡 Tip Tuesday: Always start your day with a clear goal. Productivity begins with intention. What's your top tip for staying focused?</p>
+          <div class="post-stats">
+            <span class="post-stat"><i class="fas fa-heart"></i> 189</span>
+            <span class="post-stat"><i class="fas fa-comment"></i> 78</span>
+            <span class="post-stat"><i class="fas fa-share"></i> 23</span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
+

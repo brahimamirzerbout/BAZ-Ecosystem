@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BAZ Music - Stream Unlimited Music</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #1DB954;
+      --primary-dark: #1ed760;
+      --bg-dark: #121212;
+      --bg-secondary: #181818;
+      --bg-tertiary: #282828;
+      --bg-hover: #3E3E3E;
+      --text-primary: #FFFFFF;
+      --text-secondary: #B3B3B3;
+      --accent: #1DB954;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    .app-container {
+      display: flex;
+      height: 100vh;
+    }
+    
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      background: black;
+      padding: 24px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 12px;
+      margin-bottom: 20px;
+    }
+    
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #1DB954, #1ed760);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    
+    .logo-text {
+      font-size: 24px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #1DB954, #1ed760);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .nav-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .nav-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 0 12px;
+      margin-bottom: 8px;
+    }
+    
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .nav-item:hover, .nav-item.active {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+    
+    .nav-item i {
+      font-size: 18px;
+      width: 24px;
+    }
+    
+    .playlist-section {
+      flex: 1;
+      overflow-y: auto;
+    }
+    
+    .playlist-section::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    .playlist-section::-webkit-scrollbar-thumb {
+      background: var(--bg-tertiary);
+      border-radius: 4px;
+    }
+    
+    .playlist-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .playlist-item:hover {
+      background: var(--bg-hover);
+    }
+    
+    .playlist-cover {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    
+    .playlist-info h4 {
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .playlist-info p {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+    
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      background: linear-gradient(180deg, #2a2a2a 0%, var(--bg-dark) 100%);
+      overflow-y: auto;
+      padding: 24px 32px;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+    
+    .nav-arrows {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .nav-arrow {
+      width: 32px;
+      height: 32px;
+      background: rgba(0,0,0,0.7);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+    }
+    
+    .nav-arrow:hover {
+      transform: scale(1.1);
+    }
+    
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    
+    /* Hero Section */
+    .hero-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: flex-end;
+      min-height: 280px;
+    }
+    
+    .hero-content {
+      max-width: 500px;
+    }
+    
+    .hero-tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    
+    .hero-title {
+      font-size: 56px;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    
+    .hero-desc {
+      font-size: 16px;
+      opacity: 0.9;
+      margin-bottom: 24px;
+    }
+    
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+    }
+    
+    .btn {
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: black;
+    }
+    
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: scale(1.05);
+    }
+    
+    .btn-secondary {
+      background: rgba(255,255,255,0.3);
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.4);
+    }
+    
+    /* Section */
+    .section {
+      margin-bottom: 40px;
+    }
+    
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .section-title {
+      font-size: 24px;
+      font-weight: 700;
+    }
+    
+    .see-all {
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    
+    .see-all:hover {
+      color: white;
+    }
+    
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 24px;
+    }
+    
+    .card {
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .card:hover {
+      background: var(--bg-hover);
+      transform: translateY(-4px);
+    }
+    
+    .card:hover .play-btn {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .card-image {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .play-btn {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      width: 48px;
+      height: 48px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: black;
+      font-size: 18px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.3s;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+    
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .card-artist {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    
+    /* Quick Picks */
+    .quick-picks {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    
+    .quick-pick {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      padding: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .quick-pick:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    
+    .quick-pick-img {
+      width: 56px;
+      height: 56px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    
+    .quick-pick-title {
+      font-weight: 600;
+      font-size: 14px;
+    }
+    
+    /* Player Bar */
+    .player-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 90px;
+      background: linear-gradient(90deg, #181818, #282828);
+      border-top: 1px solid #282828;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 1000;
+    }
+    
+    .player-track {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      width: 280px;
+    }
+    
+    .player-img {
+      width: 56px;
+      height: 56px;
+      border-radius: 4px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    
+    .player-info h4 {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    
+    .player-info p {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    
+    .player-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+    }
+    
+    .player-buttons {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    
+    .player-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 16px;
+      transition: color 0.2s;
+    }
+    
+    .player-btn:hover {
+      color: white;
+    }
+    
+    .player-btn.big {
+      width: 40px;
+      height: 40px;
+      background: white;
+      border-radius: 50%;
+      color: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    
+    .player-btn.big:hover {
+      transform: scale(1.1);
+    }
+    
+    .progress-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      max-width: 500px;
+    }
+    
+    .progress-time {
+      font-size: 11px;
+      color: var(--text-secondary);
+      min-width: 40px;
+    }
+    
+    .progress-bar {
+      flex: 1;
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      cursor: pointer;
+      position: relative;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: white;
+      border-radius: 2px;
+      width: 35%;
+      position: relative;
+    }
+    
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      right: -4px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 12px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    
+    .progress-bar:hover .progress-fill::after {
+      opacity: 1;
+    }
+    
+    .player-volume {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 180px;
+      justify-content: flex-end;
+    }
+    
+    .volume-slider {
+      width: 100px;
+      height: 4px;
+      -webkit-appearance: none;
+      background: rgba(255,255,255,0.2);
+      border-radius: 2px;
+      cursor: pointer;
+    }
+    
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      background: white;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    
+    /* Scrollbar */
+    .main-content::-webkit-scrollbar {
+      width: 12px;
+    }
+    
+    .main-content::-webkit-scrollbar-thumb {
+      background: var(--bg-tertiary);
+      border-radius: 6px;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+      
+      .hero-title {
+        font-size: 36px;
+      }
+      
+      .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="logo-icon"><i class="fas fa-music"></i></div>
+        <span class="logo-text">BAZ Music</span>
+      </div>
+      
+      <div class="nav-section">
+        <div class="nav-title">Menu</div>
+        <div class="nav-item active"><i class="fas fa-home"></i> Home</div>
+        <div class="nav-item"><i class="fas fa-search"></i> Search</div>
+        <div class="nav-item"><i class="fas fa-book"></i> Library</div>
+        <div class="nav-item"><i class="fas fa-heart"></i> Liked Songs</div>
+      </div>
+      
+      <div class="nav-section">
+        <div class="nav-title">Playlists</div>
+        <div class="playlist-section">
+          <div class="playlist-item">
+            <div class="playlist-cover" style="background: linear-gradient(135deg, #f093fb, #f5576c)"><i class="fas fa-fire"></i></div>
+            <div class="playlist-info"><h4>Top Hits 2024</h4><p>Playlist • BAZ</p></div>
+          </div>
+          <div class="playlist-item">
+            <div class="playlist-cover" style="background: linear-gradient(135deg, #4facfe, #00f2fe)"><i class="fas fa-car"></i></div>
+            <div class="playlist-info"><h4>Driving Mix</h4><p>Playlist • BAZ</p></div>
+          </div>
+          <div class="playlist-item">
+            <div class="playlist-cover" style="background: linear-gradient(135deg, #fa709a, #fee140)"><i class="fas fa-sun"></i></div>
+            <div class="playlist-info"><h4>Chill Vibes</h4><p>Playlist • BAZ</p></div>
+          </div>
+          <div class="playlist-item">
+            <div class="playlist-cover" style="background: linear-gradient(135deg, #a8edea, #fed6e3)"><i class="fas fa-moon"></i></div>
+            <div class="playlist-info"><h4>Sleep Mode</h4><p>Playlist • BAZ</p></div>
+          </div>
+          <div class="playlist-item">
+            <div class="playlist-cover" style="background: linear-gradient(135deg, #667eea, #764ba2)"><i class="fas fa-dumbbell"></i></div>
+            <div class="playlist-info"><h4>Workout Energy</h4><p>Playlist • BAZ</p></div>
+          </div>
+          <div class="playlist-item">
+            <div class="playlist-cover" style="background: linear-gradient(135deg, #ffecd2, #fcb69f)"><i class="fas fa-coffee"></i></div>
+            <div class="playlist-info"><h4>Morning Coffee</h4><p>Playlist • BAZ</p></div>
+          </div>
+          <div class="playlist-item">
+            <div class="playlist-cover" style="background: linear-gradient(135deg, #ff9a9e, #fecfef)"><i class="fas fa-heart"></i></div>
+            <div class="playlist-info"><h4>Romantic Mix</h4><p>Playlist • BAZ</p></div>
+          </div>
+          <div class="playlist-item">
+            <div class="playlist-cover" style="background: linear-gradient(135deg, #ffecd2, #fcb69f)"><i class="fas fa-party"></i></div>
+            <div class="playlist-info"><h4>Party Mode</h4><p>Playlist • BAZ</p></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="header">
+        <div class="nav-arrows">
+          <button class="nav-arrow"><i class="fas fa-chevron-left"></i></button>
+          <button class="nav-arrow"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div class="user-menu">
+          <button class="btn btn-primary" style="padding: 8px 20px;"><i class="fas fa-crown"></i> Premium</button>
+          <div class="user-avatar">U</div>
+        </div>
+      </div>
+      
+      <!-- Hero -->
+      <section class="hero-section">
+        <div class="hero-content">
+          <span class="hero-tag">Featured Playlist</span>
+          <h1 class="hero-title">Discover New Music</h1>
+          <p class="hero-desc">Stream millions of songs, podcasts, and videos. Discover artists you love.</p>
+          <div class="hero-buttons">
+            <button class="btn btn-primary"><i class="fas fa-play"></i> Play Now</button>
+            <button class="btn btn-secondary"><i class="fas fa-plus"></i> Save</button>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Made For You -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Made For You</h2>
+          <span class="see-all">See All</span>
+        </div>
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-image" style="background: linear-gradient(135deg, #667eea, #764ba2)">
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;">🎵</div>
+              <button class="play-btn"><i class="fas fa-play"></i></button>
+            </div>
+            <h3 class="card-title">Daily Mix 1</h3>
+            <p class="card-artist">BAZ Music • 50 songs</p>
+          </div>
+          <div class="card">
+            <div class="card-image" style="background: linear-gradient(135deg, #f093fb, #f5576c)">
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;">🔥</div>
+              <button class="play-btn"><i class="fas fa-play"></i></button>
+            </div>
+            <h3 class="card-title">Hot Tracks</h3>
+            <p class="card-artist">Updated daily</p>
+          </div>
+          <div class="card">
+            <div class="card-image" style="background: linear-gradient(135deg, #4facfe, #00f2fe)">
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;">💫</div>
+              <button class="play-btn"><i class="fas fa-play"></i></button>
+            </div>
+            <h3 class="card-title">Release Radar</h3>
+            <p class="card-artist">New releases</p>
+          </div>
+          <div class="card">
+            <div class="card-image" style="background: linear-gradient(135deg, #43e97b, #38f9d7)">
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;">🌿</div>
+              <button class="play-btn"><i class="fas fa-play"></i></button>
+            </div>
+            <h3 class="card-title">Chill Vibes</h3>
+            <p class="card-artist">Relax & unwind</p>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Popular Artists -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Popular Artists</h2>
+          <span class="see-all">See All</span>
+        </div>
+        <div class="cards-grid">
+          <div class="card" style="background:transparent;padding:0;cursor:default;">
+            <div class="card-image" style="border-radius:50%;background: linear-gradient(135deg, #ff6b6b, #feca57)">
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:64px;">🎤</div>
+            </div>
+            <h3 class="card-title" style="text-align:center;margin-top:12px;">Aymane</h3>
+            <p class="card-artist" style="text-align:center;">Artist</p>
+          </div>
+          <div class="card" style="background:transparent;padding:0;cursor:default;">
+            <div class="card-image" style="border-radius:50%;background: linear-gradient(135deg, #a29bfe, #6c5ce7)">
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:64px;">🎸</div>
+            </div>
+            <h3 class="card-title" style="text-align:center;margin-top:12px;">DJ Khelif</h3>
+            <p class="card-artist" style="text-align:center;">Artist</p>
+          </div>
+          <div class="card" style="background:transparent;padding:0;cursor:default;">
+            <div class="card-image" style="border-radius:50%;background: linear-gradient(135deg, #fd79a8, #e84393)">
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:64px;">🎹</div>
+            </div>
+            <h3 class="card-title" style="text-align:center;margin-top:12px;">Nassim</h3>
+            <p class="card-artist" style="text-align:center;">Artist</p>
+          </div>
+          <div class="card" style="background:transparent;padding:0;cursor:default;">
+            <div class="card-image" style="border-radius:50%;background: linear-gradient(135deg, #00cec9, #0984e3)">
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:64px;">🎵</div>
+            </div>
+            <h3 class="card-title" style="text-align:center;margin-top:12px;">Rimiti</h3>
+            <p class="card-artist" style="text-align:center;">Artist</p>
+          </div>
+          <div class="card" style="background:transparent;padding:0;cursor:default;">
+            <div class="card-image" style="border-radius:50%;background: linear-gradient(135deg, #ffeaa7, #fdcb6e)">
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:64px;">🎶</div>
+            </div>
+            <h3 class="card-title" style="text-align:center;margin-top:12px;">Sofia</h3>
+            <p class="card-artist" style="text-align:center;">Artist</p>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Top Charts -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Top Charts</h2>
+          <span class="see-all">See All</span>
+        </div>
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-image" style="background: linear-gradient(135deg, #ff9a9e, #fecfef)">
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;">1️⃣</div>
+              <button class="play-btn"><i class="fas fa-play"></i></button>
+            </div>
+            <h3 class="card-title">Aflam Maghra</h3>
+            <p class="card-artist">Various Artists</p>
+          </div>
+          <div class="card">
+            <div class="card-image" style="background: linear-gradient(135deg, #a29bfe, #6c5ce7)">
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;">2️⃣</div>
+              <button class="play-btn"><i class="fas fa-play"></i></button>
+            </div>
+            <h3 class="card-title">Rai Legacy</h3>
+            <p class="card-artist">Cheb Khaled & more</p>
+          </div>
+          <div class="card">
+            <div class="card-image" style="background: linear-gradient(135deg, #74b9ff, #0984e3)">
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;">3️⃣</div>
+              <button class="play-btn"><i class="fas fa-play"></i></button>
+            </div>
+            <h3 class="card-title">Raï Moderno</h3>
+            <p class="card-artist">Top 50</p>
+          </div>
+          <div class="card">
+            <div class="card-image" style="background: linear-gradient(135deg, #fd79a8, #e84393)">
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;">4️⃣</div>
+              <button class="play-btn"><i class="fas fa-play"></i></button>
+            </div>
+            <h3 class="card-title">Chaabi Hits</h3>
+            <p class="card-artist">Traditional</p>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Quick Picks -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Quick Picks</h2>
+        </div>
+        <div class="quick-picks">
+          <div class="quick-pick">
+            <div class="quick-pick-img" style="background: linear-gradient(135deg, #667eea, #764ba2)">🎧</div>
+            <span class="quick-pick-title">Focus Flow</span>
+          </div>
+          <div class="quick-pick">
+            <div class="quick-pick-img" style="background: linear-gradient(135deg, #f093fb, #f5576c)">🏃</div>
+            <span class="quick-pick-title">Workout Energy</span>
+          </div>
+          <div class="quick-pick">
+            <div class="quick-pick-img" style="background: linear-gradient(135deg, #4facfe, #00f2fe)">😴</div>
+            <span class="quick-pick-title">Sleep Timer</span>
+          </div>
+          <div class="quick-pick">
+            <div class="quick-pick-img" style="background: linear-gradient(135deg, #43e97b, #38f9d7)">🎉</div>
+            <span class="quick-pick-title">Party Mode</span>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Genres -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Browse Genres</h2>
+        </div>
+        <div class="cards-grid" style="grid-template-columns: repeat(4, 1fr);">
+          <div class="card" style="background: linear-gradient(135deg, #667eea, #764ba2);padding:24px;">
+            <h3 style="font-size:20px;font-weight:700;">Raï</h3>
+            <p style="font-size:12px;opacity:0.8;">Traditional & Modern</p>
+          </div>
+          <div class="card" style="background: linear-gradient(135deg, #f093fb, #f5576c);padding:24px;">
+            <h3 style="font-size:20px;font-weight:700;">Pop</h3>
+            <p style="font-size:12px;opacity:0.8;">Top hits</p>
+          </div>
+          <div class="card" style="background: linear-gradient(135deg, #4facfe, #00f2fe);padding:24px;">
+            <h3 style="font-size:20px;font-weight:700;">Electronic</h3>
+            <p style="font-size:12px;opacity:0.8;">EDM & House</p>
+          </div>
+          <div class="card" style="background: linear-gradient(135deg, #43e97b, #38f9d7);padding:24px;">
+            <h3 style="font-size:20px;font-weight:700;">Hip Hop</h3>
+            <p style="font-size:12px;opacity:0.8;">Rap & Trap</p>
+          </div>
+        </div>
+      </section>
+      
+      <div style="height: 100px;"></div>
+    </main>
+  </div>
+  
+  <!-- Player Bar -->
+  <div class="player-bar">
+    <div class="player-track">
+      <div class="player-img">🎵</div>
+      <div class="player-info">
+        <h4>Eli Aandi</h4>
+        <p>Cheb Khaled</p>
+      </div>
+      <button class="player-btn" style="color:#1DB954;"><i class="fas fa-heart"></i></button>
+    </div>
+    
+    <div class="player-controls">
+      <div class="player-buttons">
+        <button class="player-btn"><i class="fas fa-random"></i></button>
+        <button class="player-btn"><i class="fas fa-step-backward"></i></button>
+        <button class="player-btn big"><i class="fas fa-play"></i></button>
+        <button class="player-btn"><i class="fas fa-step-forward"></i></button>
+        <button class="player-btn"><i class="fas fa-redo"></i></button>
+      </div>
+      <div class="progress-container">
+        <span class="progress-time">1:23</span>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+        <span class="progress-time">3:45</span>
+      </div>
+    </div>
+    
+    <div class="player-volume">
+      <button class="player-btn"><i class="fas fa-list"></i></button>
+      <button class="player-btn"><i class="fas fa-laptop-house"></i></button>
+      <button class="player-btn"><i class="fas fa-volume-up"></i></button>
+      <input type="range" class="volume-slider" min="0" max="100" value="70">
+    </div>
+  </div>
+</body>
+</html>

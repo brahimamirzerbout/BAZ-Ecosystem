@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BAZ Shop - Online Shopping</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #4f46e5;
+      --primary-dark: #4338ca;
+      --bg-dark: #0f0f0f;
+      --bg-secondary: #1a1a1a;
+      --bg-tertiary: #262626;
+      --text-primary: #ffffff;
+      --text-secondary: #a3a3a3;
+      --accent: #4f46e5;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+    
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      background: rgba(15,15,15,0.95);
+      backdrop-filter: blur(10px);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+      border-bottom: 1px solid #262626;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 24px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #4f46e5, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .search-bar {
+      flex: 1;
+      max-width: 600px;
+      margin: 0 32px;
+      position: relative;
+    }
+    
+    .search-bar input {
+      width: 100%;
+      padding: 12px 16px 12px 44px;
+      background: var(--bg-tertiary);
+      border: 1px solid #333;
+      border-radius: 12px;
+      color: white;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+    
+    .search-bar input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .search-bar i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+    }
+    
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .header-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--bg-tertiary);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: background 0.2s;
+    }
+    
+    .header-icon:hover {
+      background: #333;
+    }
+    
+    .cart-count {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--primary);
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Banner */
+    .banner {
+      background: linear-gradient(135deg, #4f46e5 0%, #818cf8 50%, #c084fc 100%);
+      padding: 48px;
+      text-align: center;
+    }
+    
+    .banner h1 {
+      font-size: 48px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    
+    .banner p {
+      font-size: 18px;
+      opacity: 0.9;
+    }
+    
+    /* Categories */
+    .categories {
+      display: flex;
+      gap: 12px;
+      padding: 24px;
+      overflow-x: auto;
+    }
+    
+    .category {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      background: var(--bg-secondary);
+      border: 1px solid #333;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    
+    .category:hover {
+      border-color: var(--primary);
+      background: var(--bg-tertiary);
+    }
+    
+    .category.active {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+    
+    .category-icon {
+      font-size: 20px;
+    }
+    
+    .category-name {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    /* Section */
+    .section {
+      padding: 24px;
+    }
+    
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+    }
+    
+    .see-all {
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    
+    /* Grid */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    
+    .product-card {
+      background: var(--bg-secondary);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(79, 70, 229, 0.2);
+    }
+    
+    .product-image {
+      position: relative;
+      height: 220px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+    }
+    
+    .product-wishlist {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 36px;
+      height: 36px;
+      background: rgba(0,0,0,0.5);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .product-discount {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: #ef4444;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    
+    .product-info {
+      padding: 16px;
+    }
+    
+    .product-category {
+      font-size: 12px;
+      color: var(--primary);
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    
+    .product-name {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .product-rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+    
+    .product-rating i {
+      color: #fbbf24;
+      font-size: 12px;
+    }
+    
+    .product-rating span {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    
+    .product-price {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .current-price {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    
+    .old-price {
+      font-size: 14px;
+      color: var(--text-secondary);
+      text-decoration: line-through;
+    }
+    
+    /* Flash Sale */
+    .flash-sale {
+      background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+      padding: 24px;
+      margin: 24px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .flash-content h3 {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    
+    .flash-timer {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .timer-block {
+      background: rgba(0,0,0,0.3);
+      padding: 8px 12px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .timer-block span {
+      font-size: 20px;
+      font-weight: 700;
+    }
+    
+    .timer-block small {
+      display: block;
+      font-size: 10px;
+      opacity: 0.8;
+    }
+    
+    .flash-products {
+      display: flex;
+      gap: 16px;
+    }
+    
+    .flash-product {
+      background: white;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+    }
+    
+    .flash-product-icon {
+      font-size: 40px;
+      margin-bottom: 8px;
+    }
+    
+    .flash-product-price {
+      color: #ef4444;
+      font-weight: 700;
+    }
+    
+    /* Brands */
+    .brands {
+      display: flex;
+      gap: 16px;
+      padding: 24px;
+      overflow-x: auto;
+    }
+    
+    .brand {
+      min-width: 140px;
+      height: 60px;
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      border: 1px solid #333;
+    }
+    
+    /* Bottom Nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15,15,15,0.95);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-around;
+      padding: 12px 0;
+      border-top: 1px solid #262626;
+      z-index: 100;
+    }
+    
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    
+    .nav-item.active {
+      color: var(--primary);
+    }
+    
+    .nav-item i {
+      font-size: 20px;
+    }
+    
+    .nav-item span {
+      font-size: 11px;
+      font-weight: 500;
+    }
+    
+    .content {
+      padding-bottom: 80px;
+    }
+    
+    ::-webkit-scrollbar {
+      height: 6px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: var(--bg-tertiary);
+      border-radius: 3px;
+    }
+    
+    @media (max-width: 768px) {
+      .search-bar {
+        display: none;
+      }
+      
+      .banner {
+        padding: 32px 20px;
+      }
+      
+      .banner h1 {
+        font-size: 32px;
+      }
+      
+      .flash-sale {
+        flex-direction: column;
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">
+      <i class="fas fa-shopping-bag"></i>
+      <span>BAZ Shop</span>
+    </div>
+    
+    <div class="search-bar">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search products, brands...">
+    </div>
+    
+    <div class="header-actions">
+      <button class="header-icon"><i class="fas fa-bell"></i></button>
+      <button class="header-icon"><i class="fas fa-heart"></i></button>
+      <button class="header-icon">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count">5</span>
+      </button>
+    </div>
+  </header>
+  
+  <div class="content">
+    <!-- Banner -->
+    <section class="banner">
+      <h1>🛍️ Super Sale</h1>
+      <p>Up to 70% off on top brands</p>
+    </section>
+    
+    <!-- Flash Sale -->
+    <div class="flash-sale">
+      <div class="flash-content">
+        <h3>⚡ Flash Sale</h3>
+        <p>Limited time offers</p>
+        <div class="flash-timer">
+          <div class="timer-block"><span>02</span><small>Hours</small></div>
+          <div class="timer-block"><span>35</span><small>Min</small></div>
+          <div class="timer-block"><span>18</span><small>Sec</small></div>
+        </div>
+      </div>
+      <div class="flash-products">
+        <div class="flash-product">
+          <div class="flash-product-icon">📱</div>
+          <div class="flash-product-price">12,999 DA</div>
+        </div>
+        <div class="flash-product">
+          <div class="flash-product-icon">⌚</div>
+          <div class="flash-product-price">4,999 DA</div>
+        </div>
+        <div class="flash-product">
+          <div class="flash-product-icon">🎧</div>
+          <div class="flash-product-price">2,499 DA</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Categories -->
+    <div class="categories">
+      <div class="category active">
+        <span class="category-icon">🛍️</span>
+        <span class="category-name">All</span>
+      </div>
+      <div class="category">
+        <span class="category-icon">📱</span>
+        <span class="category-name">Electronics</span>
+      </div>
+      <div class="category">
+        <span class="category-icon">👕</span>
+        <span class="category-name">Fashion</span>
+      </div>
+      <div class="category">
+        <span class="category-icon">🏠</span>
+        <span class="category-name">Home</span>
+      </div>
+      <div class="category">
+        <span class="category-icon">⚽</span>
+        <span class="category-name">Sports</span>
+      </div>
+      <div class="category">
+        <span class="category-icon">💄</span>
+        <span class="category-name">Beauty</span>
+      </div>
+      <div class="category">
+        <span class="category-icon">🧸</span>
+        <span class="category-name">Toys</span>
+      </div>
+      <div class="category">
+        <span class="category-icon">📚</span>
+        <span class="category-name">Books</span>
+      </div>
+    </div>
+    
+    <!-- Popular -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">🔥 Popular Products</h2>
+        <span class="see-all">See All</span>
+      </div>
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="product-image">
+            📱
+            <button class="product-wishlist"><i class="fas fa-heart"></i></button>
+            <span class="product-discount">-20%</span>
+          </div>
+          <div class="product-info">
+            <div class="product-category">Smartphones</div>
+            <h3 class="product-name">iPhone 15 Pro Max</h3>
+            <div class="product-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+              <span>(128)</span>
+            </div>
+            <div class="product-price">
+              <span class="current-price">249,999 DA</span>
+              <span class="old-price">299,999 DA</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="product-card">
+          <div class="product-image" style="background:linear-gradient(135deg,#f093fb,#f5576c)">
+            👟
+            <button class="product-wishlist"><i class="fas fa-heart"></i></button>
+          </div>
+          <div class="product-info">
+            <div class="product-category">Sports</div>
+            <h3 class="product-name">Nike Air Max 2024</h3>
+            <div class="product-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <span>(256)</span>
+            </div>
+            <div class="product-price">
+              <span class="current-price">14,999 DA</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="product-card">
+          <div class="product-image" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">
+            ⌚
+            <button class="product-wishlist"><i class="fas fa-heart"></i></button>
+            <span class="product-discount">-30%</span>
+          </div>
+          <div class="product-info">
+            <div class="product-category">Wearables</div>
+            <h3 class="product-name">Smart Watch Series 9</h3>
+            <div class="product-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <span>(89)</span>
+            </div>
+            <div class="product-price">
+              <span class="current-price">12,999 DA</span>
+              <span class="old-price">18,999 DA</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="product-card">
+          <div class="product-image" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">
+            🎧
+            <button class="product-wishlist"><i class="fas fa-heart"></i></button>
+          </div>
+          <div class="product-info">
+            <div class="product-category">Audio</div>
+            <h3 class="product-name">Wireless Earbuds Pro</h3>
+            <div class="product-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+              <span>(312)</span>
+            </div>
+            <div class="product-price">
+              <span class="current-price">4,999 DA</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="product-card">
+          <div class="product-image" style="background:linear-gradient(135deg,#a29bfe,#6c5ce7)">
+            💻
+            <button class="product-wishlist"><i class="fas fa-heart"></i></button>
+            <span class="product-discount">-15%</span>
+          </div>
+          <div class="product-info">
+            <div class="product-category">Laptops</div>
+            <h3 class="product-name">MacBook Air M3</h3>
+            <div class="product-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <span>(67)</span>
+            </div>
+            <div class="product-price">
+              <span class="current-price">189,999 DA</span>
+              <span class="old-price">219,999 DA</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="product-card">
+          <div class="product-image" style="background:linear-gradient(135deg,#ffecd2,#fcb69f)">
+            👜
+            <button class="product-wishlist"><i class="fas fa-heart"></i></button>
+          </div>
+          <div class="product-info">
+            <div class="product-category">Fashion</div>
+            <h3 class="product-name">Designer Handbag</h3>
+            <div class="product-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+              <span>(45)</span>
+            </div>
+            <div class="product-price">
+              <span class="current-price">8,999 DA</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="product-card">
+          <div class="product-image" style="background:linear-gradient(135deg,#ff9a9e,#fecfef)">
+            💄
+            <button class="product-wishlist"><i class="fas fa-heart"></i></button>
+          </div>
+          <div class="product-info">
+            <div class="product-category">Beauty</div>
+            <h3 class="product-name">Luxury Makeup Set</h3>
+            <div class="product-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <span>(189)</span>
+            </div>
+            <div class="product-price">
+              <span class="current-price">3,499 DA</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="product-card">
+          <div class="product-image" style="background:linear-gradient(135deg,#667eea,#764ba2)">
+            🎮
+            <button class="product-wishlist"><i class="fas fa-heart"></i></button>
+            <span class="product-discount">-25%</span>
+          </div>
+          <div class="product-info">
+            <div class="product-category">Gaming</div>
+            <h3 class="product-name">PS5 Console</h3>
+            <div class="product-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <span>(523)</span>
+            </div>
+            <div class="product-price">
+              <span class="current-price">69,999 DA</span>
+              <span class="old-price">89,999 DA</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Brands -->
+    <div class="section-header" style="padding: 0 24px;">
+      <h2 class="section-title">🏷️ Top Brands</h2>
+    </div>
+    <div class="brands">
+      <div class="brand">🍎 Apple</div>
+      <div class="brand">📱 Samsung</div>
+      <div class="brand">👟 Nike</div>
+      <div class="brand">⌚ Samsung</div>
+      <div class="brand">💻 HP</div>
+      <div class="brand">🎮 Sony</div>
+      <div class="brand">📷 Canon</div>
+      <div class="brand">🎧 JBL</div>
+    </div>
+    
+    <!-- New Arrivals -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">🆕 New Arrivals</h2>
+        <span class="see-all">See All</span>
+      </div>
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="product-image" style="background:linear-gradient(135deg,#00cec9,#0984e3)">
+            📷
+            <button class="product-wishlist"><i class="fas fa-heart"></i></button>
+          </div>
+          <div class="product-info">
+            <div class="product-category">Cameras</div>
+            <h3 class="product-name">DSLR Camera 4K</h3>
+            <div class="product-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <span>(34)</span>
+            </div>
+            <div class="product-price">
+              <span class="current-price">45,999 DA</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="product-card">
+          <div class="product-image" style="background:linear-gradient(135deg,#ffeaa7,#fdcb6e)">
+            🏸
+            <button class="product-wishlist"><i class="fas fa-heart"></i></button>
+          </div>
+          <div class="product-info">
+            <div class="product-category">Sports</div>
+            <h3 class="product-name">Professional Tennis Racket</h3>
+            <div class="product-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+              <span>(28)</span>
+            </div>
+            <div class="product-price">
+              <span class="current-price">6,499 DA</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="product-card">
+          <div class="product-image" style="background:linear-gradient(135deg,#fd79a8,#e84393)">
+            🧴
+            <button class="product-wishlist"><i class="fas fa-heart"></i></button>
+          </div>
+          <div class="product-info">
+            <div class="product-category">Beauty</div>
+            <h3 class="product-name">Skincare Set Premium</h3>
+            <div class="product-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <span>(156)</span>
+            </div>
+            <div class="product-price">
+              <span class="current-price">5,999 DA</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="product-card">
+          <div class="product-image" style="background:linear-gradient(135deg,#74b9ff,#0984e3)">
+            🚲
+            <button class="product-wishlist"><i class="fas fa-heart"></i></button>
+            <span class="product-discount">-40%</span>
+          </div>
+          <div class="product-info">
+            <div class="product-category">Sports</div>
+            <h3 class="product-name">Mountain Bike Pro</h3>
+            <div class="product-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+              <span>(78)</span>
+            </div>
+            <div class="product-price">
+              <span class="current-price">35,999 DA</span>
+              <span class="old-price">59,999 DA</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav">
+    <div class="nav-item active">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </div>
+    <div class="nav-item">
+      <i class="fas fa-search"></i>
+      <span>Search</span>
+    </div>
+    <div class="nav-item">
+      <i class="fas fa-shopping-bag"></i>
+      <span>Orders</span>
+    </div>
+    <div class="nav-item">
+      <i class="fas fa-heart"></i>
+      <span>Wishlist</span>
+    </div>
+    <div class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </div>
+  </nav>
+</body>
+</html>

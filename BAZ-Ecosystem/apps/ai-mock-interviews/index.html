@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mock Interviews - AI Practice</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --primary: #f59e0b; --secondary: #f97316; --bg-dark: #0a0a0f; --bg-secondary: #12121a; --bg-tertiary: #1a1a25; --text-primary: #f8fafc; --text-secondary: #94a3b8; --border: #2e2e3a; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; }
+    .app-container { display: flex; min-height: 100vh; }
+    .sidebar { width: 280px; background: var(--bg-secondary); border-right: 1px solid var(--border); padding: 1.5rem; }
+    .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); margin-bottom: 2rem; display: flex; align-items: center; gap: 10px; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 0.75rem 1rem; border-radius: 10px; cursor: pointer; transition: all 0.2s; color: var(--text-secondary); margin-bottom: 0.5rem; }
+    .nav-item:hover, .nav-item.active { background: rgba(245, 158, 11, 0.15); color: var(--primary); }
+    .main-content { flex: 1; padding: 2rem; overflow-y: auto; }
+    .header { margin-bottom: 2rem; }
+    .header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .header p { color: var(--text-secondary); }
+    .stats-row { display: flex; gap: 1.5rem; margin-bottom: 2rem; }
+    .stat-card { flex: 1; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; }
+    .stat-value { font-size: 2rem; font-weight: 700; color: var(--primary); }
+    .stat-label { color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem; }
+    .interview-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; margin-bottom: 1.5rem; }
+    .interview-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .interview-title { font-size: 1.25rem; font-weight: 600; }
+    .badge { padding: 0.35rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+    .badge.upcoming { background: rgba(245, 158, 11, 0.2); color: var(--primary); }
+    .badge.completed { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+    .interview-meta { display: flex; gap: 2rem; margin-bottom: 1rem; color: var(--text-secondary); font-size: 0.9rem; }
+    .interview-meta span { display: flex; align-items: center; gap: 6px; }
+    .btn { padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; }
+    .btn-primary { background: var(--primary); color: #000; }
+    .btn-primary:hover { background: var(--secondary); }
+    .topics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem; }
+    .topic-tag { background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 10px; padding: 0.75rem; text-align: center; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
+    .topic-tag:hover { border-color: var(--primary); }
+    .progress-section { margin-top: 2rem; }
+    .progress-bar { height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; margin-top: 0.5rem; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 65%; }
+    .tips-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .tip-card { background: var(--bg-tertiary); border-radius: 12px; padding: 1.25rem; }
+    .tip-card h4 { font-size: 0.95rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; }
+    .tip-card h4 i { color: var(--primary); }
+    .tip-card p { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5; }
+    @media (max-width: 768px) { .sidebar { display: none; } .topics-grid, .tips-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="logo"><i class="fas fa-user-tie"></i> Mock Interviews</div>
+      <div class="nav-item active"><i class="fas fa-home"></i> Dashboard</div>
+      <div class="nav-item"><i class="fas fa-play-circle"></i> Practice</div>
+      <div class="nav-item"><i class="fas fa-history"></i> History</div>
+      <div class="nav-item"><i class="fas fa-book"></i> Resources</div>
+      <div class="nav-item"><i class="fas fa-cog"></i> Settings</div>
+    </aside>
+    <main class="main-content">
+      <div class="header">
+        <h1>Interview Practice</h1>
+        <p>Prepare for your next interview with AI-powered practice sessions</p>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-value">12</div>
+          <div class="stat-label">Sessions Completed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">78%</div>
+          <div class="stat-label">Average Score</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">3</div>
+          <div class="stat-label">Upcoming Sessions</div>
+        </div>
+      </div>
+      <div class="interview-card">
+        <div class="interview-header">
+          <h3 class="interview-title">Next Interview Session</h3>
+          <span class="badge upcoming">Tomorrow, 2:00 PM</span>
+        </div>
+        <div class="interview-meta">
+          <span><i class="fas fa-briefcase"></i> Software Engineer</span>
+          <span><i class="fas fa-clock"></i> 30 minutes</span>
+          <span><i class="fas fa-question-circle"></i> 5 questions</span>
+        </div>
+        <button class="btn btn-primary"><i class="fas fa-play"></i> Start Practice</button>
+        <div class="topics-grid">
+          <div class="topic-tag">Data Structures</div>
+          <div class="topic-tag">System Design</div>
+          <div class="topic-tag">Behavioral</div>
+        </div>
+      </div>
+      <div class="progress-section">
+        <h3>Your Progress</h3>
+        <div class="progress-bar"><div class="progress-fill"></div></div>

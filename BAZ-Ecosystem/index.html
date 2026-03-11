@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BAZ Ecosystem - Master Router</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0a0a0f;
+      color: #f8fafc;
+      min-height: 100vh;
+    }
+    :root {
+      --primary: #6366f1;
+      --secondary: #8b5cf6;
+      --success: #22c55e;
+      --error: #ef4444;
+      --warning: #f59e0b;
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-tertiary: #1a1a25;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --border: #2e2e3a;
+    }
+    
+    .app-container { display: flex; min-height: 100vh; }
+    
+    .sidebar {
+      width: 280px;
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .logo {
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary), #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .logo-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 2rem;
+    }
+    
+    .section-title {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+      padding-left: 0.5rem;
+    }
+    
+    .nav { flex: 1; }
+    
+    .nav-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: transparent;
+      border: none;
+      border-radius: 12px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      margin-bottom: 0.25rem;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+      text-align: left;
+    }
+    
+    .nav-btn:hover { background: var(--bg-tertiary); }
+    .nav-btn.active { background: rgba(99, 102, 241, 0.2); color: var(--text-primary); }
+    
+    .nav-btn .icon { font-size: 1.25rem; }
+    
+    .app-card-mini {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.75rem;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .app-card-mini:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+    
+    .app-card-mini h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    
+    .app-card-mini p {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+    
+    .main-content {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    
+    .header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    
+    .stats {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .stat {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .stat-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+    
+    .app-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    
+    .app-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(99, 102, 241, 0.15);
+    }
+    
+    .app-card-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .app-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    
+    .app-card h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    
+    .app-card p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    
+    .app-meta {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .tag {
+      font-size: 0.7rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+    }
+    
+    .tag.flagship {
+      background: rgba(99, 102, 241, 0.2);
+      color: var(--primary);
+    }
+    
+    /* App Viewer Modal */
+    .app-viewer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--bg-primary);
+      z-index: 1000;
+      display: none;
+    }
+    
+    .app-viewer.active { display: block; }
+    
+    .viewer-header {
+      height: 60px;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+    }
+    
+    .viewer-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    
+    .close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 1.5rem;
+      padding: 0.5rem;
+    }
+    
+    .close-btn:hover { color: var(--text-primary); }
+    
+    .viewer-frame {
+      width: 100%;
+      height: calc(100vh - 60px);
+      border: none;
+    }
+    
+    .security-alert {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--error);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      z-index: 2000;
+      display: none;
+      animation: slideIn 0.3s ease;
+    }
+    
+    .security-alert.show { display: block; }
+    
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="logo">BAZ</div>
+      <div class="logo-subtitle">Ecosystem Router</div>
+      
+      <nav class="nav">
+        <div class="section-title">Navigation</div>
+        <button class="nav-btn active" data-view="all">
+          <span class="icon">📚</span> All Apps
+        </button>
+        <button class="nav-btn" data-view="flagship">
+          <span class="icon">⭐</span> Flagship
+        </button>
+        <button class="nav-btn" data-view="ai">
+          <span class="icon">🤖</span> AI Apps
+        </button>
+        <button class="nav-btn" data-view="ventures">
+          <span class="icon">💼</span> Ventures
+        </button>
+        <button class="nav-btn" data-view="social">
+          <span class="icon">📱</span> Social
+        </button>
+        <button class="nav-btn" data-view="finance">
+          <span class="icon">🏦</span> Finance
+        </button>
+      </nav>
+      
+      <div class="section-title" style="margin-top: 1rem;">Recent</div>
+      <div id="recentApps"></div>
+    </aside>
+    
+    <main class="main-content">
+      <div class="header">
+        <h1 id="viewTitle">All Applications</h1>
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-value" id="totalApps">0</span>
+            <span class="stat-label">Total</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" id="flagshipCount">0</span>
+            <span class="stat-label">Flagship</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="grid" id="appGrid"></div>
+    </main>
+  </div>
+  
+  <div class="app-viewer" id="appViewer">
+    <div class="viewer-header">
+      <span class="viewer-title" id="viewerTitle">App Name</span>
+      <button class="close-btn" onclick="closeApp()">✕</button>
+    </div>
+    <iframe class="viewer-frame" id="appFrame" src=""></iframe>
+  </div>
+  
+  <div class="security-alert" id="securityAlert"></div>
+
+  <script>
+    // ============================================
+    // BAZ Prefix Validation & Security Functions
+    // ============================================
+    
+    // Valid BAZ prefixes
+    const VALID_BAZ_PREFIXES = ['baz-', 'baz', 'ai-', 'social-', 'banking-', 'perplexity-'];
+    
+    /**
+     * Validates that an app ID has a proper BAZ prefix
+     * @param {string} appId - The application ID to validate
+     * @returns {boolean} - True if valid, false otherwise
+     */
+    function validateBAZPrefix(appId) {
+      if (!appId) return false;
+      
+      // Check if appId starts with any valid prefix
+      const hasValidPrefix = VALID_BAZ_PREFIXES.some(prefix => 
+        appId.toLowerCase().startsWith(prefix.toLowerCase())
+      );
+      
+      return hasValidPrefix;
+    }
+    
+    /**
+     * Validates route and checks for path traversal attempts
+     * @param {string} appId - The application ID
+     * @param {string} appPath - The application path
+     * @returns {object} - { valid: boolean, error?: string }
+     */
+    function validateRoute(appId, appPath) {
+      // Check BAZ prefix
+      if (!validateBAZPrefix(appId)) {
+        return { 
+          valid: false, 
+          error: `Invalid app ID: "${appId}". Must start with: ${VALID_BAZ_PREFIXES.join(', ')}` 
+        };
+      }
+      
+      // Check for path traversal attempts
+      if (appPath && (appPath.includes('../') || appPath.includes('..\\'))) {
+        return { 
+          valid: false, 
+          error: 'Path traversal detected. Access denied.' 
+        };
+      }
+      
+      // Check for absolute paths outside BAZ ecosystem
+      if (appPath && /^[a-zA-Z]:\\/.test(appPath)) {
+        return { 
+          valid: false, 
+          error: 'Absolute paths are not allowed. Use relative paths.' 
+        };
+      }
+      
+      return { valid: true };
+    }
+    
+    /**
+     * Shows a security alert message
+     * @param {string} message - The alert message
+     */
+    function showSecurityAlert(message) {
+      const alert = document.getElementById('securityAlert');
+      alert.textContent = message;
+      alert.classList.add('show');
+      setTimeout(() => alert.classList.remove('show'), 5000);
+    }
+    
+    // ============================================
+    // Application Data
+    // ============================================
+    
+    const apps = [
+      // Flagship Apps
+      { id: 'baz-universe', name: 'BAZ Universe', icon: '🌌', category: 'flagship', priority: 'flagship', path: 'apps/baz-universe/index.html', description: 'Complete ecosystem overview and navigation hub' },
+{ id: 'baz-empire', name: 'BAZ Empire', icon: '🏛️', category: 'flagship', priority: 'flagship', path: 'apps/baz-empire/index.html', description: 'Unified enterprise dashboard and management platform' },
+      { id: 'baz-ui', name: 'BAZ UI', icon: '🎨', category: 'flagship', priority: 'flagship', path: 'apps/baz-ui/index.html', description: 'Design system and component library' },
+      { id: 'baz-homepage', name: 'Homepage', icon: '🏠', category: 'flagship', priority: 'flagship', path: 'apps/baz-homepage/index.html', description: 'BAZ Ecosystem homepage' },
+      
+      // Consumer Apps (Lifestyle)
+      { id: 'baz-music', name: 'BAZ Music', icon: '🎵', category: 'lifestyle', priority: 'flagship', path: 'apps/baz-music/index.html', description: 'Stream unlimited music, podcasts, and videos' },
+      { id: 'baz-video', name: 'BAZ Video', icon: '🎬', category: 'lifestyle', priority: 'flagship', path: 'apps/baz-video/index.html', description: 'Stream movies, TV shows, and originals' },
+      { id: 'baz-food', name: 'BAZ Food', icon: '🍔', category: 'lifestyle', priority: 'flagship', path: 'apps/baz-food/index.html', description: 'Order food online from top restaurants' },
+      { id: 'baz-shop', name: 'BAZ Shop', icon: '🛍️', category: 'lifestyle', priority: 'flagship', path: 'apps/baz-shop/index.html', description: 'Online shopping with millions of products' },
+      { id: 'baz-delivery', name: 'BAZ Delivery', icon: '📦', category: 'lifestyle', priority: 'flagship', path: 'apps/baz-delivery/index.html', description: 'Fast and secure package delivery' },
+      { id: 'baz-games', name: 'BAZ Games', icon: '🎮', category: 'lifestyle', priority: 'flagship', path: 'apps/baz-games/index.html', description: 'Play online games and watch streams' },
+      
+      // AI Apps
+      { id: 'ai-agent-v2', name: 'AI Agent V2', icon: '🤖', category: 'ai', priority: 'standard', path: 'apps/ai-agent-v2/index.html', description: 'Next-generation AI agent with advanced capabilities' },
+      { id: 'ai-mock-interviews', name: 'Mock Interviews', icon: '🎤', category: 'ai', priority: 'standard', path: 'apps/ai-mock-interviews/index.html', description: 'AI-powered interview practice platform' },
+      { id: 'ai-resume-analyzer', name: 'Resume Analyzer', icon: '📄', category: 'ai', priority: 'standard', path: 'apps/ai-resume-analyzer/index.html', description: 'AI-powered resume optimization' },
+      { id: 'perplexity-ai-v2', name: 'Perplexity AI V2', icon: '🔮', category: 'ai', priority: 'standard', path: 'apps/perplexity-ai-v2/index.html', description: 'Advanced AI search and discovery' },
+      { id: 'baz-ai-ad-optimizer', name: 'Ad Optimizer', icon: '📢', category: 'ai', priority: 'standard', path: 'apps/baz-ai-ad-optimizer/index.html', description: 'AI-powered ad campaign optimization' },
+      { id: 'baz-marketing-ai', name: 'Marketing AI', icon: '📈', category: 'ai', priority: 'standard', path: 'apps/baz-marketing-ai/index.html', description: 'AI-powered marketing automation' },
+      { id: 'baz-brainstorm', name: 'Brainstorm', icon: '💡', category: 'ai', priority: 'standard', path: 'apps/baz-brainstorm/index.html', description: 'AI-powered brainstorming & idea generation' },
+      
+      // Ventures Apps
+      { id: 'ventures-academy', name: 'Ventures Academy', icon: '🎓', category: 'ventures', priority: 'flagship', path: 'apps/ventures-academy/index.html', description: 'Educational platform for entrepreneurship' },
+      { id: 'ventures-deal-rooms', name: 'Deal Rooms', icon: '🏠', category: 'ventures', priority: 'standard', path: 'apps/ventures-deal-rooms/index.html', description: 'Investment deal management platform' },
+      { id: 'ventures-library', name: 'Ventures Library', icon: '📚', category: 'ventures', priority: 'standard', path: 'apps/ventures-library/index.html', description: 'Resource library for entrepreneurs' },
+      { id: 'ventures-platform', name: 'Ventures Platform', icon: '🖥️', category: 'ventures', priority: 'standard', path: 'apps/ventures-platform/index.html', description: 'Main ventures management platform' },
+      
+      // Social Apps
+      { id: 'social-posts-dashboard-v2', name: 'Social Posts V2', icon: '📱', category: 'social', priority: 'standard', path: 'apps/social-posts-dashboard-v2/index.html', description: 'Social media management dashboard' },
+      { id: 'social-posts-dashboard', name: 'Social Posts', icon: '📱', category: 'social', priority: 'standard', path: 'apps/social-posts-dashboard/index.html', description: 'Social media posting tool' },
+      
+      // Finance Apps
+      { id: 'banking-base', name: 'Banking Base', icon: '🏦', category: 'finance', priority: 'standard', path: 'apps/banking-base/index.html', description: 'Banking infrastructure platform' },
+      
+      // Other Apps
+      { id: 'ad-optimizer', name: 'Ad Optimizer', icon: '📊', category: 'saas', priority: 'standard', path: 'apps/ad-optimizer/index.html', description: 'Ad performance optimization' },
+      { id: 'saas-app', name: 'SaaS App', icon: '☁️', category: 'saas', priority: 'standard', path: 'apps/saas-app/index.html', description: 'General SaaS application template' },
+      { id: 'foto', name: 'Foto', icon: '📷', category: 'media', priority: 'standard', path: 'apps/foto/index.html', description: 'Photo management and editing' },
+      { id: 'hub', name: 'Hub', icon: '🔗', category: 'utility', priority: 'standard', path: 'apps/hub/index.html', description: 'Central hub for all BAZ services' },
+      { id: 'project-mern-dashboard', name: 'MERN Dashboard', icon: '📊', category: 'saas', priority: 'standard', path: 'apps/project-mern-dashboard/index.html', description: 'Full-stack dashboard template' },
+      { id: 'purple-empire', name: 'Purple Empire', icon: '🟣', category: 'flagship', priority: 'flagship', path: 'apps/purple-empire/index.html', description: 'Premium enterprise suite' },
+    ];
+    
+    let currentView = 'all';
+    let recentApps = [];
+    
+    function init() {
+      loadRecentApps();
+      renderApps(apps);
+      updateStats();
+    }
+    
+    function renderApps(appList) {
+      const grid = document.getElementById('appGrid');
+      grid.innerHTML = '';
+      
+      const colors = {
+        flagship: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+        ai: 'linear-gradient(135deg, #22c55e, #10b981)',
+        ventures: 'linear-gradient(135deg, #f59e0b, #f97316)',
+        social: 'linear-gradient(135deg, #ec4899, #f43f5e)',
+        finance: 'linear-gradient(135deg, #0ea5e9, #0284c7)',
+        saas: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+        media: 'linear-gradient(135deg, #a855f7, #d946ef)',
+        utility: 'linear-gradient(135deg, #64748b, #94a3b8)',
+      };
+      
+      appList.forEach(app => {
+        const card = document.createElement('div');
+        card.className = 'app-card';
+        card.onclick = () => openApp(app);
+        card.innerHTML = `
+          <div class="app-card-header">
+            <div class="app-icon" style="background: ${colors[app.category] || colors.utility}">
+              ${app.icon}
+            </div>
+            <div>
+              <h3>${app.name}</h3>
+              <p>${app.description}</p>
+            </div>
+          </div>
+          <div class="app-meta">
+            <span class="tag ${app.priority === 'flagship' ? 'flagship' : ''}">${app.priority === 'flagship' ? 'Flagship' : 'Standard'}</span>
+            <span class="tag">${app.category}</span>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+    
+    function updateStats() {
+      document.getElementById('totalApps').textContent = apps.length;
+      document.getElementById('flagshipCount').textContent = apps.filter(a => a.priority === 'flagship').length;
+    }
+    
+    function loadRecentApps() {
+      const saved = localStorage.getItem('bazRecentApps');
+      if (saved) {
+        recentApps = JSON.parse(saved);
+      } else {
+        recentApps = apps.slice(0, 3).map(a => a.id);
+      }
+      renderRecentApps();
+    }
+    
+    function renderRecentApps() {
+      const container = document.getElementById('recentApps');
+      container.innerHTML = '';
+      
+      recentApps.forEach(appId => {
+        const app = apps.find(a => a.id === appId);
+        if (app) {
+          const div = document.createElement('div');
+          div.className = 'app-card-mini';
+          div.onclick = () => openApp(app);
+          div.innerHTML = `
+            <h4>${app.icon} ${app.name}</h4>
+            <p>${app.category}</p>
+          `;
+          container.appendChild(div);
+        }
+      });
+    }
+    
+    function openApp(app) {
+      // Validate BAZ prefix before opening
+      const validation = validateRoute(app.id, app.path);
+      if (!validation.valid) {
+        showSecurityAlert(validation.error);
+        console.error('Security Alert:', validation.error);
+        return;
+      }
+      
+      recentApps = [app.id, ...recentApps.filter(id => id !== app.id)].slice(0, 5);
+      localStorage.setItem('bazRecentApps', JSON.stringify(recentApps));
+      renderRecentApps();
+      
+      document.getElementById('viewerTitle').textContent = app.name;
+      document.getElementById('appFrame').src = app.path;
+      document.getElementById('appViewer').classList.add('active');
+    }
+    
+    function closeApp() {
+      document.getElementById('appViewer').classList.remove('active');
+      document.getElementById('appFrame').src = '';
+    }
+    
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const view = btn.dataset.view;
+        currentView = view;
+        
+        let filtered = apps;
+        if (view === 'flagship') {
+          filtered = apps.filter(a => a.priority === 'flagship');
+        } else if (view !== 'all') {
+          filtered = apps.filter(a => a.category === view);
+        }
+        
+        document.getElementById('viewTitle').textContent = 
+          view === 'all' ? 'All Applications' :
+          view === 'flagship' ? 'Flagship Apps' :
+          view === 'ai' ? 'AI Applications' :
+          view === 'ventures' ? 'Ventures' :
+          view === 'social' ? 'Social Apps' :
+          view === 'finance' ? 'Finance Apps' : 'Applications';
+        
+        renderApps(filtered);
+      });
+    });
+    
+    init();
+  </script>
+</body>
+</html>

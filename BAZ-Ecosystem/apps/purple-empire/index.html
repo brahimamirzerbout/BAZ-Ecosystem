@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purple Empire - Premium Enterprise Suite</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #a855f7;
+      --secondary: #d946ef;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --bg-dark: #0c0c14;
+      --bg-secondary: #151520;
+      --bg-tertiary: #1e1e2c;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --border: #2e2e3a;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+    .app-container { display: flex; min-height: 100vh; }
+    .sidebar { width: 260px; background: var(--bg-secondary); border-right: 1px solid var(--border); padding: 1.5rem; display: flex; flex-direction: column; }
+    .logo { display: flex; align-items: center; gap: 12px; margin-bottom: 2rem; }
+    .logo-icon { width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    .logo-text { font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .nav-section { margin-bottom: 1.5rem; }
+    .nav-title { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; padding-left: 0.5rem; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 0.75rem 1rem; border-radius: 10px; color: var(--text-secondary); cursor: pointer; transition: all 0.2s; font-size: 0.9rem; }
+    .nav-item:hover, .nav-item.active { background: rgba(168, 85, 247, 0.15); color: var(--text-primary); }
+    .nav-item i { width: 20px; }
+    .main-content { flex: 1; padding: 2rem; overflow-y: auto; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+    .header h1 { font-size: 1.75rem; font-weight: 700; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .header p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem; }
+    .premium-badge { background: linear-gradient(135deg, var(--primary), var(--secondary)); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .feature-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; transition: all 0.3s; }
+    .feature-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(168, 85, 247, 0.2); }
+    .feature-icon { width: 56px; height: 56px; background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(217, 70, 239, 0.2)); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1rem; }
+    .feature-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .feature-card p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; }
+    .analytics-section { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .analytics-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .analytics-title { font-size: 1.1rem; font-weight: 600; }
+    .analytics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+    .analytics-item { text-align: center; padding: 1rem; background: var(--bg-tertiary); border-radius: 12px; }
+    .analytics-value { font-size: 1.75rem; font-weight: 700; color: var(--primary); }
+    .analytics-label { font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem; }
+    .team-section { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; }
+    .team-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-top: 1rem; }
+    .team-member { text-align: center; }
+    .team-avatar { width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1.25rem; }
+    .team-member h4 { font-size: 0.9rem; font-weight: 500; }
+    .team-member p { font-size: 0.75rem; color: var(--text-secondary); }
+    @media (max-width: 768px) { .sidebar { display: none; } .analytics-grid { grid-template-columns: repeat(2, 1fr); } .team-grid { grid-template-columns: repeat(3, 1fr); } }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="logo-icon">🟣</div>
+        <span class="logo-text">Purple</span>
+      </div>
+      <div class="nav-section">
+        <div class="nav-title">Main</div>
+        <div class="nav-item active"><i class="fas fa-th-large"></i> Dashboard</div>
+        <div class="nav-item"><i class="fas fa-crown"></i> Premium</div>
+        <div class="nav-item"><i class="fas fa-chart-pie"></i> Analytics</div>
+        <div class="nav-item"><i class="fas fa-users"></i> Team</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-title">Tools</div>
+        <div class="nav-item"><i class="fas fa-magic"></i> AI Tools</div>
+        <div class="nav-item"><i class="fas fa-brain"></i> Insights</div>
+        <div class="nav-item"><i class="fas fa-bolt"></i> Automation</div>
+      </div>
+    </aside>
+    <main class="main-content">
+      <div class="header">
+        <div>
+          <h1>Purple Empire</h1>
+          <p>Premium enterprise suite for power users</p>
+        </div>
+        <div class="premium-badge"><i class="fas fa-crown"></i> Premium Active</div>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-brain"></i></div>
+          <h3>AI Assistant</h3>
+          <p>Advanced AI-powered assistant with natural language processing and smart recommendations.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+          <h3>Enterprise Security</h3>
+          <p>Bank-grade security with end-to-end encryption and advanced threat protection.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-rocket"></i></div>
+          <h3>Fast Performance</h3>
+          <p>Optimized for speed with global CDN and edge computing capabilities.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-sync"></i></div>
+          <h3>Real-time Sync</h3>
+          <p>Instant synchronization across all your devices with offline support.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+          <h3>Advanced Analytics</h3>
+          <p>Comprehensive insights and predictive analytics for better decision making.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-headset"></i></div>
+          <h3>24/7 Support</h3>
+          <p>Dedicated premium support with priority response times.</p>
+        </div>
+      </div>
+      <div class="analytics-section">
+        <div class="analytics-header">
+          <h3 class="analytics-title">Performance Metrics</h3>
+          <span style="color: var(--primary); cursor: pointer;">View Details</span>
+        </div>
+        <div class="analytics-grid">
+          <div class="analytics-item">
+            <div class="analytics-value">99.9%</div>
+            <div class="analytics-label">Uptime</div>
+          </div>
+          <div class="analytics-item">
+            <div class="analytics-value">2.4M</div>
+            <div class="analytics-label">API Calls</div>
+          </div>
+          <div class="analytics-item">
+            <div class="analytics-value">45ms</div>
+            <div class="analytics-label">Avg Response</div>
+          </div>
+          <div class="analytics-item">
+            <div class="analytics-value">128GB</div>
+            <div class="analytics-label">Data Transfer</div>
+          </div>
+        </div>
+      </div>
+      <div class="team-section">
+        <h3 class="analytics-title">Team Members</h3>
+        <div class="team-grid">
+          <div class="team-member"><div class="team-avatar">AK</div><h4>Amine K.</h4><p>Admin</p></div>
+          <div class="team-member"><div class="team-avatar">YM</div><h4>Youssef M.</h4><p>Editor</p></div>
+          <div class="team-member"><div class="team-avatar">SB</div><h4>Sofia B.</p></div>
+          <div class="team-member"><div class="team-avatar">RH</div><h4>Rachid H.</h4><p>Viewer</p></div>
+          <div class="team-member"><div class="team-avatar">+</div><h4>Invite</h4><p>Add new</p></div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
+

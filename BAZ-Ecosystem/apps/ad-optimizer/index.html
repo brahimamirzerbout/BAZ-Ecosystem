@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ad Optimizer - Campaign Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --primary: #6366f1; --secondary: #8b5cf6; --bg-dark: #0a0a0f; --bg-secondary: #12121a; --bg-tertiary: #1a1a25; --text-primary: #f8fafc; --text-secondary: #94a3b8; --border: #2e2e3a; --success: #22c55e; --warning: #f59e0b; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; }
+    .app-container { display: flex; min-height: 100vh; }
+    .sidebar { width: 260px; background: var(--bg-secondary); border-right: 1px solid var(--border); padding: 1.5rem; }
+    .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 2rem; }
+    .nav-item { padding: 0.75rem 1rem; border-radius: 10px; cursor: pointer; color: var(--text-secondary); margin-bottom: 0.5rem; transition: all 0.2s; }
+    .nav-item:hover, .nav-item.active { background: rgba(99, 102, 241, 0.15); color: var(--primary); }
+    .main-content { flex: 1; padding: 2rem; overflow-y: auto; }
+    .header { margin-bottom: 2rem; }
+    .header h1 { font-size: 1.75rem; font-weight: 700; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; text-align: center; }
+    .stat-value { font-size: 1.75rem; font-weight: 700; color: var(--primary); }
+    .stat-label { font-size: 0.85rem; color: var(--text-secondary); }
+    .campaigns-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .campaign-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; }
+    .campaign-header { display: flex; justify-content: space-between; margin-bottom: 1rem; }
+    .campaign-title { font-weight: 600; }
+    .campaign-status { padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; }
+    .campaign-status.active { background: rgba(34, 197, 94, 0.2); color: var(--success); }
+    .campaign-status.paused { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+    .campaign-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+    .campaign-stat { text-align: center; }
+    .campaign-stat-value { font-weight: 600; }
+    .campaign-stat-label { font-size: 0.75rem; color: var(--text-secondary); }
+    @media (max-width: 768px) { .sidebar { display: none; } .stats-grid { grid-template-columns: repeat(2, 1fr); } .campaigns-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="logo"><i class="fas fa-bullhorn"></i> Ad Optimizer</div>
+      <div class="nav-item active">Dashboard</div>
+      <div class="nav-item">Campaigns</div>
+      <div class="nav-item">Analytics</div>
+      <div class="nav-item">Settings</div>
+    </aside>
+    <main class="main-content">
+      <div class="header"><h1>Ad Campaigns</h1></div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-value">$12.5K</div><div class="stat-label">Spend</div></div>
+        <div class="stat-card"><div class="stat-value">245K</div><div class="stat-label">Impressions</div></div>
+        <div class="stat-card"><div class="stat-value">3.2%</div><div class="stat-label">CTR</div></div>
+        <div class="stat-card"><div class="stat-value">$0.45</div><div class="stat-label">CPC</div></div>
+      </div>
+      <h3 style="margin-bottom: 1rem;">Active Campaigns</h3>
+      <div class="campaigns-grid">
+        <div class="campaign-card">
+          <div class="campaign-header"><span class="campaign-title">Summer Sale</span><span class="campaign-status active">Active</span></div>
+          <div class="campaign-stats">
+            <div class="campaign-stat"><div class="campaign-stat-value">$2,500</div><div class="campaign-stat-label">Spend</div></div>
+            <div class="campaign-stat"><div class="campaign-stat-value">85K</div><div class="campaign-stat-label">Impressions</div></div>
+            <div class="campaign-stat"><div class="campaign-stat-value">4.2%</div><div class="campaign-stat-label">CTR</div></div>
+          </div>
+        </div>
+        <div class="campaign-card">
+          <div class="campaign-header"><span class="campaign-title">Brand Awareness</span><span class="campaign-status active">Active</span></div>
+          <div class="campaign-stats">
+            <div class="campaign-stat"><div class="campaign-stat-value">$5,000</div><div class="campaign-stat-label">Spend</div></div>
+            <div class="campaign-stat"><div class="campaign-stat-value">120K</div><div class="campaign-stat-label">Impressions</div></div>
+            <div class="campaign-stat"><div class="campaign-stat-value">2.8%</div><div class="campaign-stat-label">CTR</div></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
+

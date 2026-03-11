@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banking Base - Digital Banking</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --primary: #0ea5e9; --secondary: #0284c7; --bg-dark: #0a0a0f; --bg-secondary: #12121a; --bg-tertiary: #1a1a25; --text-primary: #f8fafc; --text-secondary: #94a3b8; --border: #2e2e3a; --success: #22c55e; --warning: #f59e0b; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; }
+    .app-container { display: flex; min-height: 100vh; }
+    .sidebar { width: 260px; background: var(--bg-secondary); border-right: 1px solid var(--border); padding: 1.5rem; }
+    .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 2rem; display: flex; align-items: center; gap: 10px; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 0.75rem 1rem; border-radius: 10px; cursor: pointer; color: var(--text-secondary); margin-bottom: 0.5rem; transition: all 0.2s; }
+    .nav-item:hover, .nav-item.active { background: rgba(14, 165, 233, 0.15); color: var(--primary); }
+    .main-content { flex: 1; padding: 2rem; overflow-y: auto; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+    .header h1 { font-size: 1.75rem; font-weight: 700; }
+    .balance-card { background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 20px; padding: 2rem; margin-bottom: 2rem; }
+    .balance-label { font-size: 0.9rem; opacity: 0.8; margin-bottom: 0.5rem; }
+    .balance-amount { font-size: 3rem; font-weight: 700; margin-bottom: 1.5rem; }
+    .card-number { font-size: 1.25rem; letter-spacing: 0.1em; opacity: 0.9; }
+    .actions-row { display: flex; gap: 1rem; margin-bottom: 2rem; }
+    .action-btn { flex: 1; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; text-align: center; cursor: pointer; transition: all 0.2s; }
+    .action-btn:hover { border-color: var(--primary); }
+    .action-btn i { font-size: 1.5rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .action-btn span { display: block; font-size: 0.9rem; }
+    .transactions { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; }
+    .section-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; }
+    .transaction-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .transaction-item { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem; background: var(--bg-tertiary); border-radius: 10px; }
+    .transaction-left { display: flex; align-items: center; gap: 0.75rem; }
+    .transaction-icon { width: 40px; height: 40px; background: rgba(14, 165, 233, 0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+    .transaction-info h4 { font-size: 0.9rem; }
+    .transaction-info p { font-size: 0.75rem; color: var(--text-secondary); }
+    .transaction-amount { font-weight: 600; }
+    .transaction-amount.negative { color: var(--text-primary); }
+    .transaction-amount.positive { color: var(--success); }
+    @media (max-width: 768px) { .sidebar { display: none; } .actions-row { flex-wrap: wrap; } .action-btn { min-width: 45%; } }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="logo"><i class="fas fa-university"></i> Banking</div>
+      <div class="nav-item active"><i class="fas fa-home"></i> Dashboard</div>
+      <div class="nav-item"><i class="fas fa-exchange-alt"></i> Transfers</div>
+      <div class="nav-item"><i class="fas fa-credit-card"></i> Cards</div>
+      <div class="nav-item"><i class="fas fa-chart-pie"></i> Analytics</div>
+      <div class="nav-item"><i class="fas fa-cog"></i> Settings</div>
+    </aside>
+    <main class="main-content">
+      <div class="header">
+        <h1>Welcome back, User</h1>
+        <span style="color: var(--text-secondary);">Today, Jan 15</span>
+      </div>
+      <div class="balance-card">
+        <div class="balance-label">Total Balance</div>
+        <div class="balance-amount">$12,450.00</div>
+        <div class="card-number">**** **** **** 4289</div>
+      </div>
+      <div class="actions-row">
+        <div class="action-btn"><i class="fas fa-arrow-up"></i><span>Send</span></div>
+        <div class="action-btn"><i class="fas fa-arrow-down"></i><span>Receive</span></div>
+        <div class="action-btn"><i class="fas fa-plus"></i><span>Add Money</span></div>
+        <div class="action-btn"><i class="fas fa-ellipsis-h"></i><span>More</span></div>
+      </div>
+      <div class="transactions">
+        <h3 class="section-title">Recent Transactions</h3>
+        <div class="transaction-list">
+          <div class="transaction-item">
+            <div class="transaction-left">
+              <div class="transaction-icon"><i class="fas fa-shopping-bag"></i></div>
+              <div class="transaction-info"><h4>Amazon</h4><p>Online Shopping</p></div>
+            </div>
+            <span class="transaction-amount negative">-$45.99</span>
+          </div>
+          <div class="transaction-item">
+            <div class="transaction-left">
+              <div class="transaction-icon"><i class="fas fa-arrow-down"></i></div>
+              <div class="transaction-info"><h4>Salary</h4><p>Deposit</p></div>
+            </div>
+            <span class="transaction-amount positive">+$3,200.00</span>
+          </div>
+          <div class="transaction-item">
+            <div class="transaction-left">
+              <div class="transaction-icon"><i class="fas fa-utensils"></i></div>
+              <div class="transaction-info"><h4>Restaurant</h4><p>Dining</p></div>
+            </div>
+            <span class="transaction-amount negative">-$28.50</span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
+

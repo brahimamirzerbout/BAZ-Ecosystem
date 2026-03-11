@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ventures Library - Resource Center</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --primary: #f59e0b; --secondary: #d97706; --bg-dark: #0a0a0f; --bg-secondary: #12121a; --bg-tertiary: #1a1a25; --text-primary: #f8fafc; --text-secondary: #94a3b8; --border: #2e2e3a; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; }
+    .app-container { display: flex; min-height: 100vh; }
+    .sidebar { width: 260px; background: var(--bg-secondary); border-right: 1px solid var(--border); padding: 1.5rem; }
+    .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 2rem; display: flex; align-items: center; gap: 10px; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 0.75rem 1rem; border-radius: 10px; cursor: pointer; transition: all 0.2s; color: var(--text-secondary); margin-bottom: 0.5rem; }
+    .nav-item:hover, .nav-item.active { background: rgba(245, 158, 11, 0.15); color: var(--primary); }
+    .main-content { flex: 1; padding: 2rem; overflow-y: auto; }
+    .header { margin-bottom: 2rem; }
+    .header h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .header p { color: var(--text-secondary); }
+    .search-bar { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+    .search-bar input { flex: 1; background: none; border: none; color: var(--text-primary); font-size: 1rem; outline: none; }
+    .categories { display: flex; gap: 0.75rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .category { padding: 0.5rem 1rem; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 20px; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
+    .category:hover, .category.active { border-color: var(--primary); background: rgba(245, 158, 11, 0.1); color: var(--primary); }
+    .resources-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+    .resource-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; cursor: pointer; transition: all 0.3s; }
+    .resource-card:hover { border-color: var(--primary); transform: translateY(-4px); }
+    .resource-icon { width: 48px; height: 48px; background: rgba(245, 158, 11, 0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; margin-bottom: 1rem; }
+    .resource-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .resource-card p { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5; }
+    .resource-meta { display: flex; gap: 1rem; margin-top: 1rem; font-size: 0.75rem; color: var(--text-secondary); }
+    @media (max-width: 768px) { .sidebar { display: none; } }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="logo"><i class="fas fa-book"></i> Library</div>
+      <div class="nav-item active"><i class="fas fa-home"></i> Browse</div>
+      <div class="nav-item"><i class="fas fa-bookmark"></i> Saved</div>
+      <div class="nav-item"><i class="fas fa-history"></i> Recent</div>
+      <div class="nav-item"><i class="fas fa-star"></i> Favorites</div>
+    </aside>
+    <main class="main-content">
+      <div class="header">
+        <h1>Ventures Library</h1>
+        <p>Resources for entrepreneurs and investors</p>
+      </div>
+      <div class="search-bar">
+        <i class="fas fa-search" style="color: var(--text-secondary);"></i>
+        <input type="text" placeholder="Search resources...">
+      </div>
+      <div class="categories">
+        <span class="category active">All</span>
+        <span class="category">Guides</span>
+        <span class="category">Templates</span>
+        <span class="category">Case Studies</span>
+        <span class="category">Videos</span>
+        <span class="category">Webinars</span>
+      </div>
+      <div class="resources-grid">
+        <div class="resource-card">
+          <div class="resource-icon"><i class="fas fa-guide"></i></div>
+          <h3>Startup Fundamentals</h3>
+          <p>Complete guide to launching your first startup from scratch.</p>
+          <div class="resource-meta"><span><i class="fas fa-file"></i> Guide</span><span>15 min read</span></div>
+        </div>
+        <div class="resource-card">
+          <div class="resource-icon"><i class="fas fa-template"></i></div>
+          <h3>Investor Pitch Deck</h3>
+          <p>Professional pitch deck template with proven frameworks.</p>
+          <div class="resource-meta"><span><i class="fas fa-file"></i> Template</span><span>PDF</span></div>
+        </div>
+        <div class="resource-card">
+          <div class="resource-icon"><i class="fas fa-case"></i></div>
+          <h3>Success Stories</h3>
+          <p>Learn from successful entrepreneurs who raised millions.</p>
+          <div class="resource-meta"><span><i class="fas fa-file"></i> Case Study</span><span>10 min read</span></div>
+        </div>
+        <div class="resource-card">
+          <div class="resource-icon"><i class="fas fa-video"></i></div>
+          <h3>Fundraising 101</h3>
+          <p>Video series on how to raise capital for your startup.</p>
+          <div class="resource-meta"><span><i class="fas fa-video"></i> Video</span><span>45 min</span></div>
+        </div>
+        <div class="resource-card">
+          <div class="resource-icon"><i class="fas fa-chart"></i></div>
+          <h3>Financial Models</h3>
+          <p>Excel templates for building startup financial projections.</p>
+          <div class="resource-meta"><span><i class="fas fa-file"></i> Template</span><span>Excel</span></div>
+        </div>
+        <div class="resource-card">
+          <div class="resource-icon"><i class="fas fa-legal"></i></div>
+          <h3>Legal Templates</h3>
+          <p>Essential legal documents for incorporation and equity.</p>
+          <div class="resource-meta"><span><i class="fas fa-file"></i> Template</span><span>DOCX</span></div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
+
